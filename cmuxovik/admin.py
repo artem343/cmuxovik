@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import Cmux, Tag, Author, Vote
 
-# Register your models here.
+admin.site.register(Cmux)
+admin.site.register(Tag)
+admin.site.register(Author)
+admin.site.register(Vote)
