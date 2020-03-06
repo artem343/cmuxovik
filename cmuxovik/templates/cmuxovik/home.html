@@ -1,0 +1,17 @@
+{% extends 'cmuxovik/base.html' %}
+
+{% block content %}
+{% for cmux in cmuxes %}
+<div class="card mt-2">
+    <div class="card-header">
+      {{ cmux.author.user.username }}
+    </div>
+    <div class="card-body">
+      <p class="card-text">{{ cmux.text }}</p>
+    </div>
+    <div class="card-footer">
+        <small class="text-muted">{{ cmux.created_at }}</small>
+      </div>
+  </div>
+{% endfor %}
+{% endblock %}

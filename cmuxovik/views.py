@@ -1,8 +1,8 @@
 from django.shortcuts import render
-
-
-from django.http import HttpResponse
+from .models import Cmux
 
 
 def home(request):
-    return HttpResponse("Hello, Cmuxovik!")
+    cmuxes = Cmux.objects.all()[:5]
+    
+    return render(request, 'cmuxovik/home.html', {'cmuxes': cmuxes})
