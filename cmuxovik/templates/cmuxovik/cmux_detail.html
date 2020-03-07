@@ -1,0 +1,16 @@
+{% extends 'cmuxovik/base.html' %}
+
+{% block content %}
+<div class="card mt-2">
+    <div class="card-header">
+        <img class="rounded-circle article-img" src="{{ object.author.avatar.url }}">
+        {{ object.author.user.username }}
+    </div>
+    <div class="card-body">
+        <p class="card-text">{{ object.text|linebreaksbr }}</p>
+    </div>
+    <div class="card-footer">
+        <small class="text-muted">{{ object.created_at }}</small>
+    </div>
+</div>
+{% endblock %}

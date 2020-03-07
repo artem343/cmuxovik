@@ -1,0 +1,16 @@
+{% extends 'cmuxovik/base.html' %}
+{% block content %}
+<div class="content-section">
+    <form method="post">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="mb-4 border-bottom">Cmux HE Cmux?</legend>
+            <h3>Are you sure you want to delete the cmux "{{ object.text }}"</h3>
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-danger" type="submit">Yes, delete</button>
+            <a class="btn btn-outline-secondary" href="{% url 'cmuxovik-home' %}">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

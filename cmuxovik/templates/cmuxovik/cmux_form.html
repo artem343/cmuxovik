@@ -1,0 +1,16 @@
+{% extends 'cmuxovik/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+    <form method="post">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="mb-4 border-bottom">Cmux He Cmux?</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-info" type="submit">Save</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

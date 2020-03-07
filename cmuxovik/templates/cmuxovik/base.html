@@ -33,7 +33,7 @@
                     <div class="navbar-nav mr-auto">
                         <a class="nav-item nav-link" href="{% url 'cmuxovik-home' %}">Home</a>
                         {% if user.is_authenticated %}
-                        <a class="nav-item nav-link" href="#">Add a cmux</a>
+                        <a class="nav-item nav-link" href="{% url 'cmux-create' %}">New cmux</a>
                         {% endif %}
                     </div>
                     <!-- Navbar Right Side -->

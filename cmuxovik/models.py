@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.urls import reverse
 from PIL import Image
 
 
@@ -45,11 +46,14 @@ class Cmux(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        unique_together = ('text', 'is_active')
+
     def __str__(self):
         return self.text
 
-    class Meta:
-        unique_together = ('text', 'is_active')
+    def get_absolute_url(self):
+        return reverse('cmuxovik-home')
 
 
 class Vote(models.Model):

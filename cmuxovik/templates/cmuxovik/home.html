@@ -11,7 +11,19 @@
         <p class="card-text">{{ cmux.text|linebreaksbr }}</p>
     </div>
     <div class="card-footer">
-        <small class="text-muted">{{ cmux.created_at }}</small>
+        <div class="d-flex">
+            <div class="mr-auto p-2">
+                <small class="text-muted">
+                    {{ cmux.created_at }}
+                </small>
+            </div>
+            <div class="p-2">
+                {% if cmux.author == user.author %}
+                <a class="btn btn-secondary btn-sm" href="{% url 'cmux-update' cmux.id %}">Update</a>
+                <a class="btn btn-outline-danger btn-sm" href="{% url 'cmux-delete' cmux.id %}">Delete</a>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
 {% endfor %}
