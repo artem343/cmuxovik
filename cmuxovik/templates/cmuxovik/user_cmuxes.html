@@ -1,6 +1,7 @@
 {% extends 'cmuxovik/base.html' %}
 
 {% block content %}
+<h2 class="mb-3">Posts by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h2>
 {% for cmux in cmuxes %}
 <div class="card mt-2">
     <div class="card-header">
