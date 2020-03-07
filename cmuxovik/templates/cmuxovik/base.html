@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -10,6 +11,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+    <link rel="stylesheet" type="text/css" href="{% static 'cmuxovik/main.css' %}">
+
     {% if title %}
     <title>cmux - {{ title }}</title>
     {% else %}
@@ -19,7 +22,7 @@
 
 <body>
     <header class="site-header">
-        <nav class="navbar navbar-dark bg-dark navbar-expand-md sticky-top">
+        <nav class="navbar navbar-dark bg-dark navbar-expand-md fixed-top">
             <div class="container">
                 <a class="navbar-brand mr-4" href="{% url 'cmuxovik-home' %}">Cmuxovik</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"

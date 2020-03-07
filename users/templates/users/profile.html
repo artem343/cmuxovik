@@ -1,14 +1,24 @@
 {% extends "cmuxovik/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="content-section">
-      <div class="media">
+<div class="content-section">
+    <div class="media">
         <img class="rounded-circle account-img" src="{{ user.author.avatar.url }}">
         <div class="media-body">
-          <h2 class="account-heading">{{ user.username }}</h2>
-          <p class="text-secondary">{{ user.email }}</p>
+            <h2 class="account-heading">{{ user.username }}</h2>
+            <p class="text-secondary">{{ user.email }}</p>
         </div>
-      </div>
-      <!-- FORM HERE -->
     </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="mb-4 border-bottom">Edit profile</legend>
+            {{ u_form|crispy }}
+            {{ a_form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-info" type="submit">Update</button>
+        </div>
+    </form>
+</div>
 {% endblock content %}

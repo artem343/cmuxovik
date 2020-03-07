@@ -4,14 +4,15 @@
 {% for cmux in cmuxes %}
 <div class="card mt-2">
     <div class="card-header">
-      {{ cmux.author.user.username }}
+        <img class="rounded-circle article-img" src="{{ cmux.author.avatar.url }}">
+        {{ cmux.author.user.username }}
     </div>
     <div class="card-body">
-      <p class="card-text">{{ cmux.text|linebreaksbr }}</p>
+        <p class="card-text">{{ cmux.text|linebreaksbr }}</p>
     </div>
     <div class="card-footer">
         <small class="text-muted">{{ cmux.created_at }}</small>
-      </div>
-  </div>
+    </div>
+</div>
 {% endfor %}
 {% endblock %}

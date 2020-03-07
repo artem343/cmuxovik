@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from PIL import Image
 
 
 class Author(models.Model):  # one-to-one to user
@@ -12,6 +13,16 @@ class Author(models.Model):  # one-to-one to user
 
     def __str__(self):
         return self.user.username
+
+    def save(self):
+        super().save()
+
+        img = Image.open(self.avatar.path)
+
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.avatar.path)
 
 
 class Tag(models.Model):
