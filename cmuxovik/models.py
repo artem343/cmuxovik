@@ -7,7 +7,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class Author(models.Model):  # one-to-one to user
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_moderator = models.BooleanField(default=False)
-    location = models.CharField(max_length=50)
+    location = models.CharField(blank=True, max_length=50)
+    avatar = models.ImageField(default='default.jpg', upload_to='profile_pics')
 
     def __str__(self):
         return self.user.username
