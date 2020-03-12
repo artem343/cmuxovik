@@ -1,4 +1,5 @@
 {% extends 'cmuxovik/base.html' %}
+{% load ratings %}
 
 {% block content %}
 {% for cmux in cmuxes %}
@@ -15,13 +16,14 @@
             <div class="mr-auto p-2">
                 <small class="text-muted">
                     {{ cmux.created_at }}
+                    {% if cmux.author == user.author %}
+                    <a class="btn btn-outline-secondary btn-sm" href="{% url 'cmux-update' cmux.id %}">Update</a>
+                    <a class="btn btn-outline-danger btn-sm" href="{% url 'cmux-delete' cmux.id %}">Delete</a>
+                    {% endif %}
                 </small>
             </div>
             <div class="p-2">
-                {% if cmux.author == user.author %}
-                <a class="btn btn-secondary btn-sm" href="{% url 'cmux-update' cmux.id %}">Update</a>
-                <a class="btn btn-outline-danger btn-sm" href="{% url 'cmux-delete' cmux.id %}">Delete</a>
-                {% endif %}
+                {% ratings cmux icon_width=15 icon_height=15%}
             </div>
         </div>
     </div>

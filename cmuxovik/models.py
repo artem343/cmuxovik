@@ -3,7 +3,10 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
+from django.contrib.contenttypes.fields import GenericRelation
+
 from PIL import Image
+from star_ratings.models import Rating
 
 
 class Author(models.Model):  # one-to-one to user
@@ -45,6 +48,7 @@ class Cmux(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    ratings = GenericRelation(Rating, related_query_name='cmuxes')
 
     class Meta:
         unique_together = ('text', 'is_active')
@@ -73,3 +77,4 @@ class Vote(models.Model):
 
     class Meta:
         unique_together = ('cmux', 'author')
+

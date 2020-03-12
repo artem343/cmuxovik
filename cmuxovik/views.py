@@ -21,7 +21,7 @@ class CmuxListView(ListView):
     model = Cmux
     template_name = 'cmuxovik/home.html'
     context_object_name = 'cmuxes'
-    ordering = ['-created_at']
+    ordering = ['-ratings__average', '-created_at']
     paginate_by = 5
 
 
@@ -29,12 +29,12 @@ class UserCmuxListView(ListView):
     model = Cmux
     template_name = 'cmuxovik/user_cmuxes.html'
     context_object_name = 'cmuxes'
-    ordering = ['-created_at']
+    ordering = ['-ratings__average', '-created_at']
     paginate_by = 5
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
-        return Cmux.objects.filter(author=user.author).order_by('-created_at')
+        return Cmux.objects.filter(author=user.author).order_by('-ratings__average', '-created_at')
 
 
 class CmuxDetailView(DetailView):
