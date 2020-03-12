@@ -2,9 +2,11 @@ asgiref==3.2.3
 autopep8==1.4.4
 beautifulsoup4==4.8.2
 certifi==2019.11.28
+dj-database-url==0.5.0
 Django==3.0.3
 django-bootstrap4==1.1.1
 django-crispy-forms==1.9.0
+django-heroku==0.3.1
 gunicorn==20.0.4
 Pillow==7.0.0
 psycopg2==2.8.4
@@ -12,3 +14,4 @@ pycodestyle==2.5.0
 pytz==2019.3
 soupsieve==2.0
 sqlparse==0.3.0
+whitenoise==5.0.1
