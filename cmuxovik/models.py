@@ -77,4 +77,3 @@ class Vote(models.Model):
 
     class Meta:
         unique_together = ('cmux', 'author')
-

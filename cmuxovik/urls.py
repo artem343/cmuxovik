@@ -1,9 +1,9 @@
 from django.urls import path
 from cmuxovik import views
 from .views import (
-    CmuxListView, 
-    CmuxDetailView, 
-    CmuxCreateView, 
+    CmuxListView,
+    CmuxDetailView,
+    CmuxCreateView,
     CmuxUpdateView,
     CmuxDeleteView,
     UserCmuxListView,
