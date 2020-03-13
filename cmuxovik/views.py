@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from .models import Cmux
 from django.contrib.auth.models import User
 from django.views.generic import (
@@ -9,6 +9,7 @@ from django.views.generic import (
     DeleteView
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib import messages
 
 
 def home(request):
@@ -35,6 +36,17 @@ class UserCmuxListView(ListView):
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return Cmux.objects.filter(author=user.author).order_by('-ratings__average', '-created_at')
+
+
+class UnapprovedCmuxListView(ListView):
+    model = Cmux
+    template_name = 'cmuxovik/unapproved_cmuxes.html'
+    context_object_name = 'cmuxes'
+    ordering = ['-created_at']
+    paginate_by = 5
+
+    def get_queryset(self):
+        return Cmux.objects.filter(is_approved=False).order_by('-created_at')
 
 
 class CmuxDetailView(DetailView):
@@ -80,3 +92,21 @@ class CmuxDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if (is_author and post_is_new) or is_moderator:
             return True
         return False
+
+
+def approve_cmux(request, pk):
+    cmux = Cmux.objects.get(pk=pk)
+    cmux.is_approved = True
+    cmux.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+    def test_func(self):
+        is_moderator = self.request.user.author.is_moderator
+        if (is_moderator) or is_moderator:
+            return True
+        return False
+
+
+def unapproved_cmuxes_count():
+    return Cmux.objects.filter(is_approved=False).count()

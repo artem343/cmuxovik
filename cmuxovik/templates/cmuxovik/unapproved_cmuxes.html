@@ -2,6 +2,7 @@
 {% load ratings %}
 
 {% block content %}
+<h2 class="mb-3">Unapproved cmuxes ({{ page_obj.paginator.count }})</h2>
 {% for cmux in cmuxes %}
 <div class="card mt-2">
     <div class="card-header">
