@@ -55,7 +55,7 @@ class CmuxDetailView(DetailView):
 
 class CmuxCreateView(LoginRequiredMixin, CreateView):
     model = Cmux
-    fields = ['text']
+    fields = ['text', 'tags']
 
     def form_valid(self, form):
         form.instance.author = self.request.user.author
