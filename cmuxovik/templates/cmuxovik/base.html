@@ -40,6 +40,12 @@
                         {% if user.author.is_moderator %}
                         <a class="nav-item nav-link" href="{% url 'unapproved-cmuxes' %}">Unapproved</a>
                         {% endif %}
+                        <!-- Search -->
+                        <form class="form-inline" action="{{ request.get_full_path }}" method="get">
+                            <input class="form-control" id="search" type="search" placeholder="Search" name="search_text"
+                                value="{{ request.GET.search_text }}" aria-label="Search">
+                            <input type="submit" value="Search" class="btn btn-outline-secondary" />
+                        </form>
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
@@ -82,6 +88,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+
+    {% block scripts %}{% endblock %}
 </body>
 
 </html>

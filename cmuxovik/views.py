@@ -25,6 +25,13 @@ class CmuxListView(ListView):
     ordering = ['-ratings__average', '-created_at']
     paginate_by = 5
 
+    def get_queryset(self):
+        q = self.request.GET.get('search_text', None)
+        if q:
+            return Cmux.objects.filter(text__icontains=q).order_by('-ratings__average', '-created_at')
+        else:
+            return Cmux.objects.all().order_by('-ratings__average', '-created_at')
+
 
 class UserCmuxListView(ListView):
     model = Cmux
@@ -35,7 +42,11 @@ class UserCmuxListView(ListView):
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
-        return Cmux.objects.filter(author=user.author).order_by('-ratings__average', '-created_at')
+        q = self.request.GET.get('search_text', None)
+        if q:
+            return Cmux.objects.filter(author=user.author, text__icontains=q).order_by('-ratings__average', '-created_at')
+        else:
+            return Cmux.objects.filter(author=user.author).order_by('-ratings__average', '-created_at')
 
 
 class UnapprovedCmuxListView(ListView):
@@ -46,7 +57,11 @@ class UnapprovedCmuxListView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        return Cmux.objects.filter(is_approved=False).order_by('-created_at')
+        q = self.request.GET.get('search_text', None)
+        if q:
+            return Cmux.objects.filter(is_approved=False, text__icontains=q).order_by('-ratings__average', '-created_at')
+        else:
+            return Cmux.objects.filter(is_approved=False).order_by('-ratings__average', '-created_at')
 
 
 class CmuxDetailView(DetailView):
