@@ -4,8 +4,11 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 from django.contrib.contenttypes.fields import GenericRelation
-
+# Images
 from PIL import Image
+import io
+from django.core.files.storage import default_storage as storage
+# Star ratings
 from star_ratings.models import Rating
 
 
@@ -68,12 +71,19 @@ class Author(SoftDeleteModel):  # one-to-one to user
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        img = Image.open(self.avatar.path)
+        img_read = storage.open(self.avatar.name, 'rb')
+        img = Image.open(img_read)
 
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)
-            img.save(self.avatar.path)
+            in_mem_file = io.BytesIO()
+            img.convert('RGB').save(in_mem_file, format='JPEG')
+            img_write = storage.open(self.avatar.name, 'w+')
+            img_write.write(in_mem_file.getvalue())
+            img_write.close()
+
+        img_read.close()
 
 
 class Tag(SoftDeleteModel):
