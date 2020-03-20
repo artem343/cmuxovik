@@ -9,11 +9,58 @@ from PIL import Image
 from star_ratings.models import Rating
 
 
-class Author(models.Model):  # one-to-one to user
+class SoftDeleteModel(models.Model):
+    class Meta:
+        abstract = True
+
+    deleted_at = models.DateTimeField(null=True, blank=True)
+
+    def delete(self):
+        self.deleted_at = timezone.now()
+        self.is_active = False
+        self.save()
+
+    def undelete(self):
+        self.deleted_at = None
+        self.is_active = True
+        self.save()
+
+
+class SoftDeleteQuerySet(models.query.QuerySet):
+    """
+    Prevents objects from being hard-deleted. Instead, sets the
+    ``date_deleted``, effectively soft-deleting the object.
+    """
+
+    def delete(self):
+        for obj in self:
+            obj.deleted_at = timezone.now()
+            self.is_active = False
+            obj.save()
+
+    def undelete(self):
+        for obj in self:
+            obj.deleted_at = None
+            self.is_active = True
+            obj.save()
+
+
+class SoftDeleteManager(models.Manager):
+    """
+    Only exposes objects that have NOT been soft-deleted.
+    """
+
+    def get_queryset(self):
+        return SoftDeleteQuerySet(self.model, using=self._db).filter(
+            deleted_at__isnull=True)
+
+
+class Author(SoftDeleteModel):  # one-to-one to user
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_moderator = models.BooleanField(default=False)
     location = models.CharField(blank=True, max_length=50)
     avatar = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.user.username
@@ -29,7 +76,7 @@ class Author(models.Model):  # one-to-one to user
             img.save(self.avatar.path)
 
 
-class Tag(models.Model):
+class Tag(SoftDeleteModel):
     name = models.CharField(max_length=50)
     domain = models.CharField(max_length=50)  # TODO: change to enum?
     is_active = models.BooleanField(default=True)
@@ -40,7 +87,7 @@ class Tag(models.Model):
         return f"{self.name} | {self.domain}"
 
 
-class Cmux(models.Model):
+class Cmux(SoftDeleteModel):
     text = models.TextField()
     author = models.ForeignKey(Author, on_delete=models.DO_NOTHING)
     tags = models.ManyToManyField(Tag)
@@ -51,7 +98,7 @@ class Cmux(models.Model):
     ratings = GenericRelation(Rating, related_query_name='cmuxes')
 
     class Meta:
-        unique_together = ('text', 'is_active')
+        unique_together = ('text', 'deleted_at')
 
     def __str__(self):
         return self.text
@@ -60,7 +107,7 @@ class Cmux(models.Model):
         return reverse('cmuxovik-home')
 
 
-class Vote(models.Model):
+class Vote(SoftDeleteModel):
     cmux = models.ForeignKey(Cmux, on_delete=models.CASCADE)
     author = models.ForeignKey(Author, on_delete=models.DO_NOTHING)
     vote = models.IntegerField(
@@ -69,6 +116,7 @@ class Vote(models.Model):
             MinValueValidator(1)
         ]
     )
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

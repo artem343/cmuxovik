@@ -28,9 +28,9 @@ class CmuxListView(ListView):
     def get_queryset(self):
         q = self.request.GET.get('search_text', None)
         if q:
-            return Cmux.objects.filter(text__icontains=q).order_by('-ratings__average', '-created_at')
+            return Cmux.objects.filter(is_active=True, text__icontains=q).order_by('-ratings__average', '-created_at')
         else:
-            return Cmux.objects.all().order_by('-ratings__average', '-created_at')
+            return Cmux.objects.filter(is_active=True).order_by('-ratings__average', '-created_at')
 
 
 class UserCmuxListView(ListView):
@@ -44,9 +44,9 @@ class UserCmuxListView(ListView):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         q = self.request.GET.get('search_text', None)
         if q:
-            return Cmux.objects.filter(author=user.author, text__icontains=q).order_by('-ratings__average', '-created_at')
+            return Cmux.objects.filter(is_active=True, author=user.author, text__icontains=q).order_by('-ratings__average', '-created_at')
         else:
-            return Cmux.objects.filter(author=user.author).order_by('-ratings__average', '-created_at')
+            return Cmux.objects.filter(is_active=True, author=user.author).order_by('-ratings__average', '-created_at')
 
 
 class UnapprovedCmuxListView(ListView):
@@ -59,9 +59,9 @@ class UnapprovedCmuxListView(ListView):
     def get_queryset(self):
         q = self.request.GET.get('search_text', None)
         if q:
-            return Cmux.objects.filter(is_approved=False, text__icontains=q).order_by('-ratings__average', '-created_at')
+            return Cmux.objects.filter(is_active=True, is_approved=False, text__icontains=q).order_by('-ratings__average', '-created_at')
         else:
-            return Cmux.objects.filter(is_approved=False).order_by('-ratings__average', '-created_at')
+            return Cmux.objects.filter(is_active=True, is_approved=False).order_by('-ratings__average', '-created_at')
 
 
 class CmuxDetailView(DetailView):
@@ -90,7 +90,7 @@ class CmuxUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         is_author = self.request.user.author == cmux.author
         is_moderator = self.request.user.author.is_moderator
         post_is_new = not cmux.is_approved
-        if is_author and post_is_new:
+        if is_author and post_is_new and cmux.is_active:
             return True
         return False
 
@@ -104,7 +104,7 @@ class CmuxDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         is_author = self.request.user.author == cmux.author
         is_moderator = self.request.user.author.is_moderator
         post_is_new = not cmux.is_approved
-        if (is_author and post_is_new) or is_moderator:
+        if (is_author and post_is_new and cmux.is_active) or is_moderator:
             return True
         return False
 
@@ -118,7 +118,7 @@ def approve_cmux(request, pk):
 
     def test_func(self):
         is_moderator = self.request.user.author.is_moderator
-        if (is_moderator) or is_moderator:
+        if is_moderator and cmux.is_active:
             return True
         return False
 
