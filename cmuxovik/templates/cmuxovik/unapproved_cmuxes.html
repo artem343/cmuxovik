@@ -39,8 +39,10 @@
         </div>
     </div>
 </div>
+{% empty %}
+<h3>There are no unapproved cmuxes.</h3>
+{% endfor %}
 <div class="mt-2">
-    {% endfor %}
     {% if is_paginated %}
     {% if page_obj.has_previous %}
     <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
@@ -58,5 +60,5 @@
     <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
     {% endif %}
     {% endif %}
-    {% endblock %}
-</div>
+</div>    
+{% endblock %}

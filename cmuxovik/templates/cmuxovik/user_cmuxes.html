@@ -2,61 +2,63 @@
 {% load ratings %}
 
 {% block content %}
-<h2 class="mb-3">Posts by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h2>
-{% for cmux in cmuxes %}
-<div class="card mt-2">
-    <div class="card-header">
-        <img class="rounded-circle article-img" src="{{ cmux.author.avatar.url }}">
-        <a class="mr-2" href="{% url 'user-cmuxes' cmux.author.user.username %}">{{ cmux.author.user.username }}</a>
-    </div>
-    <div class="card-body">
-        <p class="card-text">{{ cmux.text|linebreaksbr }}</p>
-        {% if cmux.tags %}
-            {% for tag in cmux.tags.all %}
-                <span class="badge badge-secondary">{{ tag }}</span>
-            {% endfor %}
+    <h2 class="mb-3">Cmuxes by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h2>
+    {% for cmux in cmuxes %}
+        <div class="card mt-2">
+            <div class="card-header">
+                <img class="rounded-circle article-img" src="{{ cmux.author.avatar.url }}">
+                <a class="mr-2" href="{% url 'user-cmuxes' cmux.author.user.username %}">{{ cmux.author.user.username }}</a>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ cmux.text|linebreaksbr }}</p>
+                {% if cmux.tags %}
+                    {% for tag in cmux.tags.all %}
+                        <span class="badge badge-secondary">{{ tag }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <small class="text-muted">
+                            {{ cmux.created_at }}
+                        </small>
+                    </div>
+                    <div class="p-2">
+                        {% ratings cmux icon_width=15 icon_height=15%}
+                    </div>
+                </div>
+                <div class="d-flex ml-1">
+                    {% if not cmux.is_approved and user.author.is_moderator %}
+                    <a class="btn btn-success btn-sm mr-1" href="{% url 'cmux-approve' cmux.id %}">Approve</a>
+                    {% endif %}
+                    {% if cmux.author == user.author %}
+                    <a class="btn btn-outline-secondary btn-sm mr-1" href="{% url 'cmux-update' cmux.id %}">Update</a>
+                    <a class="btn btn-outline-danger btn-sm mr-1" href="{% url 'cmux-delete' cmux.id %}">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <h3>There are no cmuxes by {{ view.kwargs.username }}.</h3>
+    {% endfor %}
+    <div class="mt-2">
+        {% if is_paginated %}
+        {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
         {% endif %}
     </div>
-    <div class="card-footer">
-        <div class="d-flex">
-            <div class="mr-auto p-2">
-                <small class="text-muted">
-                    {{ cmux.created_at }}
-                </small>
-            </div>
-            <div class="p-2">
-                {% ratings cmux icon_width=15 icon_height=15%}
-            </div>
-        </div>
-        <div class="d-flex ml-1">
-            {% if not cmux.is_approved and user.author.is_moderator %}
-            <a class="btn btn-success btn-sm mr-1" href="{% url 'cmux-approve' cmux.id %}">Approve</a>
-            {% endif %}
-            {% if cmux.author == user.author %}
-            <a class="btn btn-outline-secondary btn-sm mr-1" href="{% url 'cmux-update' cmux.id %}">Update</a>
-            <a class="btn btn-outline-danger btn-sm mr-1" href="{% url 'cmux-delete' cmux.id %}">Delete</a>
-            {% endif %}
-        </div>
-    </div>
-</div>
-<div class="mt-2">
-    {% endfor %}
-    {% if is_paginated %}
-    {% if page_obj.has_previous %}
-    <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
-    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-    {% endif %}
-    {% for num in page_obj.paginator.page_range %}
-    {% if page_obj.number == num %}
-    <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
-    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-    <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
-    {% endif %}
-    {% endfor %}
-    {% if page_obj.has_next %}
-    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
-    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-    {% endif %}
-    {% endif %}
-    {% endblock %}
-</div>
+{% endblock %}

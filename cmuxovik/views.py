@@ -128,12 +128,12 @@ def approve_cmux(request, pk):
     cmux = Cmux.objects.get(pk=pk)
     if cmux.is_approved:
         messages.warning(
-                request, 'This cmux has already been approved.')
+            request, 'This cmux has already been approved.')
     else:
         cmux.is_approved = True
         cmux.save()
         messages.success(
-                request, 'The cmux was approved!')
+            request, 'The cmux was approved!')
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
