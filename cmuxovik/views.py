@@ -9,6 +9,7 @@ from django.views.generic import (
     DeleteView
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 
 
@@ -109,18 +110,23 @@ class CmuxDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 
+def is_moderator(user):
+    return user.author.is_moderator
+
+
+@user_passes_test(is_moderator)
 def approve_cmux(request, pk):
     cmux = Cmux.objects.get(pk=pk)
-    cmux.is_approved = True
-    cmux.save()
+    if cmux.is_approved:
+        messages.warning(
+                request, 'This cmux has already been approved.')
+    else:
+        cmux.is_approved = True
+        cmux.save()
+        messages.success(
+                request, 'The cmux was approved!')
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-    def test_func(self):
-        is_moderator = self.request.user.author.is_moderator
-        if is_moderator and cmux.is_active:
-            return True
-        return False
 
 
 def unapproved_cmuxes_count():
