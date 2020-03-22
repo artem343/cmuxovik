@@ -10,6 +10,8 @@ from django.views.generic import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
+
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 
 
@@ -69,18 +71,20 @@ class CmuxDetailView(DetailView):
     model = Cmux
 
 
-class CmuxCreateView(LoginRequiredMixin, CreateView):
+class CmuxCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Cmux
     fields = ['text', 'tags']
+    success_message = "The cmux was successfully created!"
 
     def form_valid(self, form):
         form.instance.author = self.request.user.author
         return super().form_valid(form)
 
 
-class CmuxUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class CmuxUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     model = Cmux
     fields = ['text']
+    success_message = "The cmux was successfully updated!"
 
     def form_valid(self, form):
         form.instance.author = self.request.user.author
@@ -98,7 +102,12 @@ class CmuxUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class CmuxDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Cmux
+    success_message = "The cmux was successfully deleted."
     success_url = '/'
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(CmuxDeleteView, self).delete(request, *args, **kwargs)
 
     def test_func(self):
         cmux = self.get_object()
