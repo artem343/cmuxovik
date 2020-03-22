@@ -29,11 +29,14 @@ class CmuxListView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
+        filter_params, exclude_params = {}, {}
+        filter_params['is_active'] = True
         q = self.request.GET.get('search_text', None)
         if q:
-            return Cmux.objects.filter(is_active=True, text__icontains=q).order_by('-ratings__average', '-created_at')
-        else:
-            return Cmux.objects.filter(is_active=True).order_by('-ratings__average', '-created_at')
+            filter_params['text__icontains'] = q
+        if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
+            exclude_params['is_approved'] = False
+        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by('-ratings__average', '-created_at')
 
 
 class UserCmuxListView(ListView):
@@ -45,14 +48,18 @@ class UserCmuxListView(ListView):
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
+        filter_params, exclude_params = {}, {}
+        filter_params['is_active'] = True
+        filter_params['author'] = user.author
         q = self.request.GET.get('search_text', None)
         if q:
-            return Cmux.objects.filter(is_active=True, author=user.author, text__icontains=q).order_by('-ratings__average', '-created_at')
-        else:
-            return Cmux.objects.filter(is_active=True, author=user.author).order_by('-ratings__average', '-created_at')
+            filter_params['text__icontains'] = q
+        if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
+            exclude_params['is_approved'] = False
+        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by('-ratings__average', '-created_at')
 
 
-class UnapprovedCmuxListView(ListView):
+class UnapprovedCmuxListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Cmux
     template_name = 'cmuxovik/unapproved_cmuxes.html'
     context_object_name = 'cmuxes'
@@ -60,11 +67,18 @@ class UnapprovedCmuxListView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
+        filter_params, exclude_params = {}, {}
+        filter_params['is_active'] = True
+        filter_params['is_approved'] = False
         q = self.request.GET.get('search_text', None)
         if q:
-            return Cmux.objects.filter(is_active=True, is_approved=False, text__icontains=q).order_by('-ratings__average', '-created_at')
-        else:
-            return Cmux.objects.filter(is_active=True, is_approved=False).order_by('-ratings__average', '-created_at')
+            filter_params['text__icontains'] = q
+        if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
+            exclude_params['is_approved'] = False
+        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by('-ratings__average', '-created_at')
+
+    def test_func(self):
+        return self.request.user.author.is_moderator
 
 
 class CmuxDetailView(DetailView):
@@ -83,7 +97,7 @@ class CmuxCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
 class CmuxUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     model = Cmux
-    fields = ['text']
+    fields = ['text', 'tags']
     success_message = "The cmux was successfully updated!"
 
     def form_valid(self, form):

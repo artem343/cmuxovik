@@ -100,7 +100,7 @@ class Tag(SoftDeleteModel):
 class Cmux(SoftDeleteModel):
     text = models.TextField()
     author = models.ForeignKey(Author, on_delete=models.DO_NOTHING)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True)
     is_approved = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
