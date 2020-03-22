@@ -1,4 +1,7 @@
 {% extends "star_ratings/widget_base.html" %}
 {% block rating_detail %}
-
+{% block rating_count %}
+<span class="star-ratings-rating-count">(<span class='star-ratings-rating-value'>{{ rating.count }}</span>
+    vote{{ rating.count|pluralize }})</span>
+{% endblock rating_count %}
 {% endblock %}
