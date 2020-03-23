@@ -4,7 +4,7 @@
 {% block content %}
 <h2 class="mb-3">Unapproved cmuxes ({{ page_obj.paginator.count }})</h2>
 {% for cmux in cmuxes %}
-<div class="card shadow mt-3 bg-white rounded">
+<div class="card shadow bg-white rounded">
     <div class="card-header">
         <img class="rounded-circle article-img" src="{{ cmux.author.avatar.url }}">
         <a class="mr-2" href="{% url 'user-cmuxes' cmux.author.user.username %}">{{ cmux.author.user.username }}</a>
@@ -13,7 +13,7 @@
         <p class="card-text">{{ cmux.text|linebreaksbr }}</p>
         {% if cmux.tags %}
             {% for tag in cmux.tags.all %}
-                <span class="badge badge-secondary">{{ tag }}</span>
+                <a class="badge badge-secondary" href="{% url 'tag-cmuxes' tag.id %}">{{ tag }}</a>
             {% endfor %}
         {% endif %}
     </div>

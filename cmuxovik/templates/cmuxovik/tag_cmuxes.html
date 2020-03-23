@@ -2,7 +2,7 @@
 {% load ratings %}
 
 {% block content %}
-    <h2 class="mb-3">Cmuxes by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h2>
+    <h2 class="mb-3">Cmuxes with tag "{{ tag }}" ({{ page_obj.paginator.count }})</h2>
     {% for cmux in cmuxes %}
         <div class="card shadow bg-white rounded">
             <div class="card-header">

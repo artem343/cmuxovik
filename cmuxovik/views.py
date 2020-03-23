@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
-from .models import Cmux
+from .models import Cmux, Tag
 from django.contrib.auth.models import User
 from django.views.generic import (
     ListView,
@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
+from django.urls import resolve
 
 
 def home(request):
@@ -26,9 +27,10 @@ class CmuxListView(ListView):
     template_name = 'cmuxovik/home.html'
     context_object_name = 'cmuxes'
     ordering = ['-ratings__average', '-created_at']
-    paginate_by = 5
+    paginate_by = 10
 
     def get_queryset(self):
+        # Filtering
         filter_params, exclude_params = {}, {}
         filter_params['is_active'] = True
         q = self.request.GET.get('search_text', None)
@@ -36,7 +38,13 @@ class CmuxListView(ListView):
             filter_params['text__icontains'] = q
         if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
             exclude_params['is_approved'] = False
-        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by('-ratings__average', '-created_at')
+        # Ordering
+        url_name = resolve(self.request.path).url_name
+        if url_name == 'cmuxovik-best':
+            order_by_list = ['-ratings__average', '-created_at']
+        else:
+            order_by_list = ['-created_at']
+        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by(*order_by_list)
 
 
 class UserCmuxListView(ListView):
@@ -44,7 +52,7 @@ class UserCmuxListView(ListView):
     template_name = 'cmuxovik/user_cmuxes.html'
     context_object_name = 'cmuxes'
     ordering = ['-ratings__average', '-created_at']
-    paginate_by = 5
+    paginate_by = 10
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
@@ -59,12 +67,38 @@ class UserCmuxListView(ListView):
         return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by('-ratings__average', '-created_at')
 
 
+class TagCmuxListView(ListView):
+    model = Cmux
+    template_name = 'cmuxovik/tag_cmuxes.html'
+    context_object_name = 'cmuxes'
+    ordering = ['-ratings__average', '-created_at']
+    paginate_by = 10
+
+    def get_queryset(self):
+        tag = get_object_or_404(Tag, pk=self.kwargs.get('pk'))
+        filter_params, exclude_params = {}, {}
+        filter_params['is_active'] = True
+        filter_params['tags__id'] = tag.id
+        q = self.request.GET.get('search_text', None)
+        if q:
+            filter_params['text__icontains'] = q
+        if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
+            exclude_params['is_approved'] = False
+        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by('-ratings__average', '-created_at')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(context)
+        print(self.kwargs.get('pk'))
+        context['tag'] = Tag.objects.get(pk=self.kwargs.get('pk'))
+        return context
+
 class UnapprovedCmuxListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Cmux
     template_name = 'cmuxovik/unapproved_cmuxes.html'
     context_object_name = 'cmuxes'
     ordering = ['-created_at']
-    paginate_by = 5
+    paginate_by = 10
 
     def get_queryset(self):
         filter_params, exclude_params = {}, {}

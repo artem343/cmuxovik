@@ -3,7 +3,7 @@
 
 {% block content %}
 {% for cmux in cmuxes %}
-<div class="card shadow mt-3 bg-white rounded">
+<div class="card shadow bg-white rounded">
     <div class="card-header">
         <div class="d-flex">
             <div class="mr-auto p-2">
@@ -26,7 +26,7 @@
         <p class="card-text">{{ cmux.text|linebreaksbr }}</p>
         {% if cmux.tags %}
             {% for tag in cmux.tags.all %}
-                <span class="badge badge-secondary">{{ tag }}</span>
+                <a class="badge badge-secondary" href="{% url 'tag-cmuxes' tag.id %}">{{ tag }}</a>
             {% endfor %}
         {% endif %}
     </div>
@@ -67,5 +67,18 @@
     <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
     {% endif %}
     {% endif %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="sidebar">
+    <a class="btn btn-outline-info" href="{% url 'cmuxovik-new' %}">New</a>
+    <a class="btn btn-outline-success" href="{% url 'cmuxovik-best' %}">Best</a>
+    <div class="card bg-white rounded">
+        <p>Welcome to cmuxovik!</p>
+        <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore laboriosam, dignissimos aliquam suscipit laborum assumenda voluptatibus quam magnam perferendis distinctio, quia voluptas, molestiae veniam pariatur tempore. Repellat impedit officia aspernatur?
+        </p>
+    </div>
 </div>
 {% endblock %}
