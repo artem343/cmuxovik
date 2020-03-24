@@ -1,7 +1,7 @@
 {% extends "star_ratings/widget_base.html" %}
+{% load i18n %}
 {% block rating_detail %}
 {% block rating_count %}
-<span class="star-ratings-rating-count">(<span class='star-ratings-rating-value'>{{ rating.count }}</span>
-    vote{{ rating.count|pluralize }})</span>
+<span class="star-ratings-rating-count">{% trans 'Votes: ' %} <span class='star-ratings-rating-value'>{{ rating.count }}</span></span>
 {% endblock rating_count %}
-{% endblock %}
+{% endblock rating_detail %}

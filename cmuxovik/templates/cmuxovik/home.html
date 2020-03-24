@@ -1,5 +1,14 @@
 {% extends 'cmuxovik/base.html' %}
-{% load ratings %}
+{% load ratings i18n %}
+
+{% block title %}
+{% if title %}
+<title>{% trans "Cmuxovik" %} - {{ title }}</title>
+{% else %}
+<title>{% trans "Cmuxovik" %}</title>
+{% endif %}
+{% endblock %}
+
 
 {% block content %}
 {% for cmux in cmuxes %}
@@ -35,11 +44,11 @@
         <div class="d-flex">
             <div class="mr-auto p-2">
                 {% if user.author.is_moderator %}
-                    <a class="btn btn-success btn-sm mr-1" href="{% url 'cmux-approve' cmux.id %}">Approve</a>
+                    <a class="btn btn-success btn-sm mr-1" href="{% url 'cmux-approve' cmux.id %}">{% trans 'Approve' %}</a>
                 {% endif %}
                 {% if cmux.author == user.author or user.author.is_moderator %}
-                    <a class="btn btn-outline-secondary btn-sm mr-1" href="{% url 'cmux-update' cmux.id %}">Update</a>
-                    <a class="btn btn-outline-danger btn-sm mr-1" href="{% url 'cmux-delete' cmux.id %}">Delete</a>
+                    <a class="btn btn-outline-secondary btn-sm mr-1" href="{% url 'cmux-update' cmux.id %}">{% trans 'Update' %}</a>
+                    <a class="btn btn-outline-danger btn-sm mr-1" href="{% url 'cmux-delete' cmux.id %}">{% trans 'Delete' %}</a>
                 {% endif %}
             </div>
         </div>
@@ -47,13 +56,13 @@
     {% endif %}
 </div>
 {% empty %}
-<h3>There are no cmuxes.</h3>
+<h3>{% trans 'There are no cmuxes.' %}</h3>
 {% endfor %}
 <div class="mt-2">
     {% if is_paginated %}
     {% if page_obj.has_previous %}
-    <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
-    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    <a class="btn btn-outline-info mb-4" href="?page=1">{% trans 'First' %}</a>
+    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">{% trans 'Previous' %}</a>
     {% endif %}
     {% for num in page_obj.paginator.page_range %}
     {% if page_obj.number == num %}
@@ -63,8 +72,8 @@
     {% endif %}
     {% endfor %}
     {% if page_obj.has_next %}
-    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
-    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">{% trans 'Next' %}</a>
+    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">{% trans 'Last' %}</a>
     {% endif %}
     {% endif %}
 </div>
@@ -72,10 +81,10 @@
 
 {% block sidebar %}
 <div id="sidebar">
-    <a class="btn btn-outline-info" href="{% url 'cmuxovik-new' %}">New</a>
-    <a class="btn btn-outline-success" href="{% url 'cmuxovik-best' %}">Best</a>
+    <a class="btn btn-outline-info" href="{% url 'cmuxovik-new' %}">{% trans 'New' %}</a>
+    <a class="btn btn-outline-success" href="{% url 'cmuxovik-best' %}">{% trans 'Best' %}</a>
     <div class="card bg-white rounded">
-        <p>Welcome to cmuxovik!</p>
+        <p>{% trans 'Welcome' %}</p>
         <p>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore laboriosam, dignissimos aliquam suscipit laborum assumenda voluptatibus quam magnam perferendis distinctio, quia voluptas, molestiae veniam pariatur tempore. Repellat impedit officia aspernatur?
         </p>

@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 
 <!DOCTYPE html>
 <html>
@@ -15,18 +15,20 @@
     <link rel="stylesheet" type="text/css" href="{% static 'cmuxovik/main.css' %}">
     <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
     <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+    {% block title %}
     {% if title %}
-    <title>cmux - {{ title }}</title>
+    <title>{% trans "Cmuxovik" %} - {{ title }}</title>
     {% else %}
-    <title>cmux</title>
+    <title>{% trans "Cmuxovik" %}</title>
     {% endif %}
+    {% endblock %}
 </head>
 
 <body>
     <header class="site-header">
         <nav class="navbar navbar-dark bg-dark navbar-expand-md fixed-top">
             <div class="container">
-                <a class="navbar-brand mr-4" href="{% url 'cmuxovik-home' %}">Cmuxovik</a>
+                <a class="navbar-brand mr-4" href="{% url 'cmuxovik-home' %}">{% trans 'Cmuxovik' %}</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
                     aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -34,39 +36,64 @@
                 <div class="collapse navbar-collapse" id="navbarToggle">
                     <div class="navbar-nav mr-auto">
                         {% if user.is_authenticated %}
-                        <a class="nav-item nav-link" href="{% url 'cmux-create' %}">New cmux</a>
+                        <a class="nav-item nav-link" href="{% url 'cmux-create' %}">{% trans 'New cmux' %}</a>
                         {% endif %}
                         <!-- Search -->
                         <form class="form-inline" action="{{ request.get_full_path }}" method="get">
-                            <input class="form-control" id="search" type="search" placeholder="Search"
+                            <input class="form-control" id="search" type="search" placeholder="{% trans 'Search' %}"
                                 name="search_text" value="{{ request.GET.search_text }}" aria-label="Search">
-                            <input type="submit" value="Search" class="btn btn-outline-secondary" />
+                            <input type="submit" value="{% trans 'Search' %}" class="btn btn-outline-secondary" />
                         </form>
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {% trans 'Language' %}
+                            </a>
+                            <ul class='dropdown-menu' role='menu'>
+                                <li>
+                                    <div class="dropdown-item">
+                                        <form name="languageRu" action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                                            <input name="next" type="hidden" value="{{ redirect_to }}" />
+                                            <input name="language" type="hidden" value="ru" />
+                                            <a href="javascript:document.languageRu.submit()"><img width='16' height='12' src="{% static 'cmuxovik/icons/russian.png' %}" alt='ru' /> Русский</a>
+                                        </form>  
+                                    </div>                    
+                                </li>
+                                <li>
+                                    <div class="dropdown-item">
+                                        <form name="languageEn" action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                                            <input name="next" type="hidden" value="{{ redirect_to }}" />
+                                            <input name="language" type="hidden" value="en" />
+                                            <a href="javascript:document.languageEn.submit()"><img width='16' height='12' src="{% static 'cmuxovik/icons/english.png' %}" alt='en' /> English</a>
+                                        </form> 
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
                         {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Actions
+                                {% trans 'Actions' %}
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                                <a class="dropdown-item" href="{% url 'profile' %}">{% trans 'Profile' %}</a>
                                 {% if user.author.is_moderator %}
-                                    <a class="dropdown-item" href="{% url 'unapproved-cmuxes' %}">Unapproved cmuxes</a>
+                                    <a class="dropdown-item" href="{% url 'unapproved-cmuxes' %}">{% trans 'Unapproved cmuxes' %}</a>
                                     {% if user.is_superuser %}
-                                        <a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a>
+                                        <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans 'Admin' %}</a>
                                     {% endif %}
                                 {% endif %}
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                                <a class="dropdown-item" href="{% url 'logout' %}">{% trans 'Logout' %}</a>
                             </div>
                         </li>
-                        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                         {% else %}
-                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                        <a class="nav-item nav-link" href="{% url 'login' %}">{% trans 'Login' %}</a>
+                        <a class="nav-item nav-link" href="{% url 'register' %}">{% trans 'Register' %}</a>
                         {% endif %}
                     </div>
                 </div>

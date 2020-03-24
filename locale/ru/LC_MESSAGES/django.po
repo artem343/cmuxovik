@@ -1,0 +1,207 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-03-24 17:03+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: cmuxovik/templates/cmuxovik/base.html:20
+#: cmuxovik/templates/cmuxovik/base.html:22
+#: cmuxovik/templates/cmuxovik/base.html:31
+#: cmuxovik/templates/cmuxovik/home.html:6
+#: cmuxovik/templates/cmuxovik/home.html:8
+msgid "Cmuxovik"
+msgstr "Цмуксовик"
+
+#: cmuxovik/templates/cmuxovik/base.html:39
+#: cmuxovik/templates/cmuxovik/cmux_form.html:9
+msgid "New cmux"
+msgstr "Добавить цмукс"
+
+#: cmuxovik/templates/cmuxovik/base.html:43
+#: cmuxovik/templates/cmuxovik/base.html:45
+msgid "Search"
+msgstr "Поиск"
+
+#: cmuxovik/templates/cmuxovik/base.html:53
+msgid "Language"
+msgstr "Язык"
+
+#: cmuxovik/templates/cmuxovik/base.html:80
+msgid "Actions"
+msgstr "Действия"
+
+#: cmuxovik/templates/cmuxovik/base.html:83
+msgid "Profile"
+msgstr "Профиль"
+
+#: cmuxovik/templates/cmuxovik/base.html:85
+#: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:5 cmuxovik/views.py:122
+msgid "Unapproved cmuxes"
+msgstr "Неподтвержденные цмуксы"
+
+#: cmuxovik/templates/cmuxovik/base.html:87
+msgid "Admin"
+msgstr "Админка"
+
+#: cmuxovik/templates/cmuxovik/base.html:91
+msgid "Logout"
+msgstr "Выход"
+
+#: cmuxovik/templates/cmuxovik/base.html:95
+msgid "Login"
+msgstr "Вход"
+
+#: cmuxovik/templates/cmuxovik/base.html:96
+msgid "Register"
+msgstr "Регистрация"
+
+#: cmuxovik/templates/cmuxovik/cmux_form.html:13
+msgid "Save"
+msgstr "Сохранить"
+
+#: cmuxovik/templates/cmuxovik/home.html:47
+#: cmuxovik/templates/cmuxovik/tag_cmuxes.html:39
+#: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:39
+#: cmuxovik/templates/cmuxovik/user_cmuxes.html:39
+msgid "Approve"
+msgstr "Подтвердить"
+
+#: cmuxovik/templates/cmuxovik/home.html:50
+#: cmuxovik/templates/cmuxovik/tag_cmuxes.html:42
+#: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:42
+#: cmuxovik/templates/cmuxovik/user_cmuxes.html:42
+msgid "Update"
+msgstr "Изменить"
+
+#: cmuxovik/templates/cmuxovik/home.html:51
+#: cmuxovik/templates/cmuxovik/tag_cmuxes.html:43
+#: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:43
+#: cmuxovik/templates/cmuxovik/user_cmuxes.html:43
+msgid "Delete"
+msgstr "Удалить"
+
+#: cmuxovik/templates/cmuxovik/home.html:59
+msgid "There are no cmuxes."
+msgstr "Здесь нет цмуксов."
+
+#: cmuxovik/templates/cmuxovik/home.html:64
+#: cmuxovik/templates/cmuxovik/tag_cmuxes.html:56
+#: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:56
+#: cmuxovik/templates/cmuxovik/user_cmuxes.html:56
+msgid "First"
+msgstr "<<"
+
+#: cmuxovik/templates/cmuxovik/home.html:65
+#: cmuxovik/templates/cmuxovik/tag_cmuxes.html:57
+#: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:57
+#: cmuxovik/templates/cmuxovik/user_cmuxes.html:57
+msgid "Previous"
+msgstr "<"
+
+#: cmuxovik/templates/cmuxovik/home.html:75
+#: cmuxovik/templates/cmuxovik/tag_cmuxes.html:67
+#: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:67
+#: cmuxovik/templates/cmuxovik/user_cmuxes.html:67
+msgid "Next"
+msgstr ">"
+
+#: cmuxovik/templates/cmuxovik/home.html:76
+#: cmuxovik/templates/cmuxovik/tag_cmuxes.html:68
+#: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:68
+#: cmuxovik/templates/cmuxovik/user_cmuxes.html:68
+msgid "Last"
+msgstr ">>"
+
+#: cmuxovik/templates/cmuxovik/home.html:84
+msgid "New"
+msgstr "Новые"
+
+#: cmuxovik/templates/cmuxovik/home.html:85
+msgid "Best"
+msgstr "Лучшие"
+
+#: cmuxovik/templates/cmuxovik/home.html:87
+msgid "Welcome"
+msgstr "Добро пожаловать"
+
+#: cmuxovik/templates/cmuxovik/tag_cmuxes.html:5
+msgid "Cmuxes with tag"
+msgstr "Цмуксы с тегом"
+
+#: cmuxovik/templates/cmuxovik/tag_cmuxes.html:51
+#: cmuxovik/templates/cmuxovik/user_cmuxes.html:51
+msgid "There are no cmuxes by"
+msgstr "Нет цмуксов от"
+
+#: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:51
+msgid "There are no unapproved cmuxes"
+msgstr "Нет неподтвержденных цмуксов"
+
+#: cmuxovik/templates/cmuxovik/user_cmuxes.html:5
+msgid "Cmuxes by"
+msgstr "Цмуксы от"
+
+#: cmuxovik/templates/star_ratings/widget.html:4
+#: cmuxovik/templates/star_ratings/widget_base.html:69
+msgid "Votes: "
+msgstr "Оценок: "
+
+#: cmuxovik/templates/star_ratings/widget_base.html:40
+msgid "Log in to rate"
+msgstr "Войдите, чтобы оценить"
+
+#: cmuxovik/templates/star_ratings/widget_base.html:66
+msgid "Average: "
+msgstr "Средняя: "
+
+#: cmuxovik/templates/star_ratings/widget_base.html:72
+msgid "You Rated: "
+msgstr "Ваша оценка: "
+
+#: cmuxovik/templates/star_ratings/widget_base.html:72
+msgid "Not rated"
+msgstr "Нет оценки"
+
+#: cmuxovik/templates/star_ratings/widget_base.html:74
+msgid "Please log in to rate."
+msgstr "Чтобы оценить цмукс, войдите на сайт."
+
+#: cmuxovik/views.py:47
+msgid "Homepage"
+msgstr "Главная"
+
+#: cmuxovik/views.py:136
+msgid "The cmux was successfully created!"
+msgstr "Цмукс успешно создан!"
+
+#: cmuxovik/views.py:146
+msgid "The cmux was successfully updated!"
+msgstr "Цмукс успешно создан!"
+
+#: cmuxovik/views.py:164
+msgid "The cmux was successfully deleted."
+msgstr "Цмукс успешно создан!"
+
+#: cmuxovik/views.py:190
+msgid "This cmux has already been approved."
+msgstr "Цмукс уже подтвержден."
+
+#: cmuxovik/views.py:195
+msgid "The cmux was approved!"
+msgstr "Цмукс успешно подтвержден!"

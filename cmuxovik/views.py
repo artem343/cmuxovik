@@ -15,11 +15,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.urls import resolve
 
-
-def home(request):
-    cmuxes = Cmux.objects.all()
-
-    return render(request, 'cmuxovik/home.html')
+from django.utils.translation import gettext as _
 
 
 class CmuxListView(ListView):
@@ -46,6 +42,11 @@ class CmuxListView(ListView):
             order_by_list = ['-created_at']
         return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by(*order_by_list)
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = _('Homepage')
+        return context
+
 
 class UserCmuxListView(ListView):
     model = Cmux
@@ -65,6 +66,11 @@ class UserCmuxListView(ListView):
         if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
             exclude_params['is_approved'] = False
         return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by('-ratings__average', '-created_at')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f"{_('Cmuxes by')} {self.kwargs.get('username')}"
+        return context
 
 
 class TagCmuxListView(ListView):
@@ -88,10 +94,10 @@ class TagCmuxListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context)
-        print(self.kwargs.get('pk'))
         context['tag'] = Tag.objects.get(pk=self.kwargs.get('pk'))
+        context['title'] = f"{_('Cmuxes by tag')} {context['tag']}"
         return context
+
 
 class UnapprovedCmuxListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Cmux
@@ -111,6 +117,11 @@ class UnapprovedCmuxListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
             exclude_params['is_approved'] = False
         return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by('-ratings__average', '-created_at')
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = _('Unapproved cmuxes')
+        return context
+
     def test_func(self):
         return self.request.user.author.is_moderator
 
@@ -122,7 +133,7 @@ class CmuxDetailView(DetailView):
 class CmuxCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Cmux
     fields = ['text', 'tags']
-    success_message = "The cmux was successfully created!"
+    success_message = _("The cmux was successfully created!")
 
     def form_valid(self, form):
         form.instance.author = self.request.user.author
@@ -132,7 +143,7 @@ class CmuxCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 class CmuxUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     model = Cmux
     fields = ['text', 'tags']
-    success_message = "The cmux was successfully updated!"
+    success_message = _("The cmux was successfully updated!")
 
     def form_valid(self, form):
         form.instance.author = self.request.user.author
@@ -150,7 +161,7 @@ class CmuxUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
 
 class CmuxDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Cmux
-    success_message = "The cmux was successfully deleted."
+    success_message = _("The cmux was successfully deleted.")
     success_url = '/'
 
     def delete(self, request, *args, **kwargs):
@@ -176,12 +187,12 @@ def approve_cmux(request, pk):
     cmux = Cmux.objects.get(pk=pk)
     if cmux.is_approved:
         messages.warning(
-            request, 'This cmux has already been approved.')
+            request, _('This cmux has already been approved.'))
     else:
         cmux.is_approved = True
         cmux.save()
         messages.success(
-            request, 'The cmux was approved!')
+            request, _('The cmux was approved!'))
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 

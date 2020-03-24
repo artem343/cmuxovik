@@ -1,8 +1,8 @@
 {% extends 'cmuxovik/base.html' %}
-{% load ratings %}
+{% load ratings i18n %}
 
 {% block content %}
-<h2 class="mb-3">Unapproved cmuxes ({{ page_obj.paginator.count }})</h2>
+<h2 class="mb-3">{% trans 'Unapproved cmuxes' %} ({{ page_obj.paginator.count }})</h2>
 {% for cmux in cmuxes %}
 <div class="card shadow bg-white rounded">
     <div class="card-header">
@@ -36,11 +36,11 @@
         <div class="d-flex">
             <div class="mr-auto p-2">
                 {% if user.author.is_moderator %}
-                    <a class="btn btn-success btn-sm mr-1" href="{% url 'cmux-approve' cmux.id %}">Approve</a>
+                    <a class="btn btn-success btn-sm mr-1" href="{% url 'cmux-approve' cmux.id %}">{% trans 'Approve' %}</a>
                 {% endif %}
                 {% if cmux.author == user.author or user.author.is_moderator %}
-                    <a class="btn btn-outline-secondary btn-sm mr-1" href="{% url 'cmux-update' cmux.id %}">Update</a>
-                    <a class="btn btn-outline-danger btn-sm mr-1" href="{% url 'cmux-delete' cmux.id %}">Delete</a>
+                    <a class="btn btn-outline-secondary btn-sm mr-1" href="{% url 'cmux-update' cmux.id %}">{% trans 'Update' %}</a>
+                    <a class="btn btn-outline-danger btn-sm mr-1" href="{% url 'cmux-delete' cmux.id %}">{% trans 'Delete' %}</a>
                 {% endif %}
             </div>
         </div>
@@ -48,13 +48,13 @@
     {% endif %}
 </div>
 {% empty %}
-<h3>There are no unapproved cmuxes.</h3>
+<h3>{% trans 'There are no unapproved cmuxes' %}.</h3>
 {% endfor %}
 <div class="mt-2">
     {% if is_paginated %}
     {% if page_obj.has_previous %}
-    <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
-    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    <a class="btn btn-outline-info mb-4" href="?page=1">{% trans 'First' %}</a>
+    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">{% trans 'Previous' %}</a>
     {% endif %}
     {% for num in page_obj.paginator.page_range %}
     {% if page_obj.number == num %}
@@ -64,8 +64,8 @@
     {% endif %}
     {% endfor %}
     {% if page_obj.has_next %}
-    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
-    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">{% trans 'Next' %}</a>
+    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">{% trans 'Last' %}</a>
     {% endif %}
     {% endif %}
 </div>    
