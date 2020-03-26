@@ -4,20 +4,30 @@ from django.db import migrations, transaction
 import json
 from dateutil import parser
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 AUTHOR_USERNAME = 'telegram'
+
 
 @transaction.atomic
 def fill_cmuxes(apps, schema_editor):
     Cmux = apps.get_model("cmuxovik", "Cmux")
     Author = apps.get_model("cmuxovik", "Author")
 
+    try:
+        user = User.objects.get(username=AUTHOR_USERNAME)
+    except ObjectDoesNotExist:
+        user = User.objects.create_user(username=AUTHOR_USERNAME,
+                                        email='sample@email.com',
+                                        password='unusablepassword')
+        user.set_unusable_password()
+        user.save()
+
+    author = Author.objects.get(user_id=user.id)
+
     with open('data/messages.json') as f:
         j_cmuxes = json.load(f)
-
         for j_cmux in j_cmuxes:
-            user = User.objects.get(username=AUTHOR_USERNAME)
-            author = Author.objects.get(user_id=user.id)
             cmux = Cmux.objects.create(
                 text=j_cmux['text'],
                 author=author,
@@ -27,6 +37,8 @@ def fill_cmuxes(apps, schema_editor):
             cmux.save()
 
 # logic for migrating backwards
+
+
 def delete_unapproved(apps, schema_editor):
     Cmux = apps.get_model("cmuxovik", "Cmux")
     Cmux.objects.filter(author__user__username=AUTHOR_USERNAME).delete()
