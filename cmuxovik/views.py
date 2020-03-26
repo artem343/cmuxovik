@@ -22,7 +22,6 @@ class CmuxListView(ListView):
     model = Cmux
     template_name = 'cmuxovik/home.html'
     context_object_name = 'cmuxes'
-    ordering = ['-ratings__average', '-created_at']
     paginate_by = 10
 
     def get_queryset(self):
@@ -35,6 +34,7 @@ class CmuxListView(ListView):
         if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
             exclude_params['is_approved'] = False
         # Ordering
+        # TODO: sometimes doesnt work just after the migration when switching locale
         url_name = resolve(self.request.path).url_name
         if url_name == 'cmuxovik-best':
             order_by_list = ['-ratings__average', '-created_at']

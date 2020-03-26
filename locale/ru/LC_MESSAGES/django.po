@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-24 17:03+0300\n"
+"POT-Creation-Date: 2020-03-26 19:26+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -129,7 +129,7 @@ msgid "Last"
 msgstr ">>"
 
 #: cmuxovik/templates/cmuxovik/home.html:84
-msgid "New"
+msgid "Newest"
 msgstr "Новые"
 
 #: cmuxovik/templates/cmuxovik/home.html:85
@@ -157,8 +157,7 @@ msgstr "Нет неподтвержденных цмуксов"
 msgid "Cmuxes by"
 msgstr "Цмуксы от"
 
-#: cmuxovik/templates/star_ratings/widget.html:4
-#: cmuxovik/templates/star_ratings/widget_base.html:69
+#: cmuxovik/templates/star_ratings/widget.html:5
 msgid "Votes: "
 msgstr "Оценок: "
 
@@ -169,6 +168,10 @@ msgstr "Войдите, чтобы оценить"
 #: cmuxovik/templates/star_ratings/widget_base.html:66
 msgid "Average: "
 msgstr "Средняя: "
+
+#: cmuxovik/templates/star_ratings/widget_base.html:69
+msgid "Rating Count: "
+msgstr ""
 
 #: cmuxovik/templates/star_ratings/widget_base.html:72
 msgid "You Rated: "
@@ -205,3 +208,6 @@ msgstr "Цмукс уже подтвержден."
 #: cmuxovik/views.py:195
 msgid "The cmux was approved!"
 msgstr "Цмукс успешно подтвержден!"
+
+#~ msgid "New"
+#~ msgstr "Новые"
