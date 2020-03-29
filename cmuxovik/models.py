@@ -10,6 +10,7 @@ import io
 from django.core.files.storage import default_storage as storage
 # Star ratings
 from star_ratings.models import Rating
+from django.utils.translation import gettext_lazy as _
 
 
 class SoftDeleteModel(models.Model):
@@ -61,8 +62,8 @@ class SoftDeleteManager(models.Manager):
 class Author(SoftDeleteModel):  # one-to-one to user
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_moderator = models.BooleanField(default=False)
-    location = models.CharField(blank=True, max_length=50)
-    avatar = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    location = models.CharField(blank=True, max_length=50, verbose_name=_('location'))
+    avatar = models.ImageField(default='default.jpg', upload_to='profile_pics', verbose_name=_('avatar'))
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -96,11 +97,16 @@ class Tag(SoftDeleteModel):
     def __str__(self):
         return f"{self.name} | {self.domain}"
 
+    class Meta:
+        verbose_name = _('tag')
+        verbose_name_plural = _('tags')
+
 
 class Cmux(SoftDeleteModel):
-    text = models.TextField()
-    author = models.ForeignKey(Author, on_delete=models.DO_NOTHING)
-    tags = models.ManyToManyField(Tag, blank=True)
+    text = models.TextField(verbose_name=_('cmux'))
+    author = models.ForeignKey(
+        Author, on_delete=models.DO_NOTHING, verbose_name=_('author'))
+    tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     is_approved = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)

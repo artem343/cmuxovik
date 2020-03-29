@@ -40,8 +40,4 @@ class Migration(migrations.Migration):
             name='is_active',
             field=models.BooleanField(default=True),
         ),
-        migrations.AlterUniqueTogether(
-            name='cmux',
-            unique_together={('text', 'deleted_at')},
-        ),
     ]

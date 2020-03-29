@@ -6,8 +6,14 @@
     <form method="post">
         {% csrf_token %}
         <fieldset class="form-group">
-            <legend class="mb-4 border-bottom">{% trans 'New cmux' %}</legend>
-            {{ form|crispy }}
+            <legend class="mb-4 border-bottom">{% trans 'Create a cmux' %}</legend>
+            <p>
+                {% trans 'After you create a cmux, it will be approved by a moderator and you will be able to see it on the main page.' %}
+            </p>
+            {{ form.text|as_crispy_field }}
+            {% if tags_exist %}
+            {{ form.tags|as_crispy_field }}
+            {% endif %}
         </fieldset>
         <div class="form-group">
             <button class="btn btn-info" type="submit">{% trans 'Save' %}</button>

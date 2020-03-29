@@ -5,12 +5,11 @@
     <form method="post">
         {% csrf_token %}
         <fieldset class="form-group">
-            <legend class="mb-4 border-bottom">Cmux HE Cmux?</legend>
-            <h3>Are you sure you want to delete the cmux "{{ object.text }}"</h3>
+            <h3>{% trans 'Are you sure you want to delete the cmux' %} <br />"{{ object.text }}"?</h3>
         </fieldset>
         <div class="form-group">
-            <button class="btn btn-outline-danger" type="submit">Yes, delete</button>
-            <a class="btn btn-outline-secondary" href="{% url 'cmuxovik-home' %}">Cancel</a>
+            <button class="btn btn-outline-danger" type="submit">{% trans 'Yes, delete' %}</button>
+            <a class="btn btn-outline-secondary" href="{% url 'cmuxovik-home' %}">{% trans 'Cancel' %}</a>
         </div>
     </form>
 </div>

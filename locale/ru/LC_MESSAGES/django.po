@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-26 19:26+0300\n"
+"POT-Creation-Date: 2020-03-30 01:00+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,34 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
+#: cmuxovik/models.py:65
+#, fuzzy
+#| msgid "Actions"
+msgid "location"
+msgstr "Действия"
+
+#: cmuxovik/models.py:66
+msgid "avatar"
+msgstr "аватар"
+
+#: cmuxovik/models.py:101
+msgid "tag"
+msgstr "тег"
+
+#: cmuxovik/models.py:102 cmuxovik/models.py:109
+msgid "tags"
+msgstr "теги"
+
+#: cmuxovik/models.py:106
+#, fuzzy
+#| msgid "New cmux"
+msgid "cmux"
+msgstr "цмукс"
+
+#: cmuxovik/models.py:108
+msgid "author"
+msgstr "автор"
+
 #: cmuxovik/templates/cmuxovik/base.html:20
 #: cmuxovik/templates/cmuxovik/base.html:22
 #: cmuxovik/templates/cmuxovik/base.html:31
@@ -28,50 +56,73 @@ msgstr ""
 msgid "Cmuxovik"
 msgstr "Цмуксовик"
 
-#: cmuxovik/templates/cmuxovik/base.html:39
-#: cmuxovik/templates/cmuxovik/cmux_form.html:9
-msgid "New cmux"
-msgstr "Добавить цмукс"
-
-#: cmuxovik/templates/cmuxovik/base.html:43
-#: cmuxovik/templates/cmuxovik/base.html:45
+#: cmuxovik/templates/cmuxovik/base.html:40
+#: cmuxovik/templates/cmuxovik/base.html:42
 msgid "Search"
 msgstr "Поиск"
 
-#: cmuxovik/templates/cmuxovik/base.html:53
+#: cmuxovik/templates/cmuxovik/base.html:47
+msgid "New cmux"
+msgstr "Добавить цмукс"
+
+#: cmuxovik/templates/cmuxovik/base.html:56
 msgid "Language"
 msgstr "Язык"
 
-#: cmuxovik/templates/cmuxovik/base.html:80
+#: cmuxovik/templates/cmuxovik/base.html:83
 msgid "Actions"
 msgstr "Действия"
 
-#: cmuxovik/templates/cmuxovik/base.html:83
+#: cmuxovik/templates/cmuxovik/base.html:86
 msgid "Profile"
 msgstr "Профиль"
 
-#: cmuxovik/templates/cmuxovik/base.html:85
+#: cmuxovik/templates/cmuxovik/base.html:88
 #: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:5 cmuxovik/views.py:122
 msgid "Unapproved cmuxes"
 msgstr "Неподтвержденные цмуксы"
 
-#: cmuxovik/templates/cmuxovik/base.html:87
+#: cmuxovik/templates/cmuxovik/base.html:90
 msgid "Admin"
 msgstr "Админка"
 
-#: cmuxovik/templates/cmuxovik/base.html:91
+#: cmuxovik/templates/cmuxovik/base.html:94
 msgid "Logout"
 msgstr "Выход"
 
-#: cmuxovik/templates/cmuxovik/base.html:95
+#: cmuxovik/templates/cmuxovik/base.html:98
 msgid "Login"
 msgstr "Вход"
 
-#: cmuxovik/templates/cmuxovik/base.html:96
+#: cmuxovik/templates/cmuxovik/base.html:99
 msgid "Register"
 msgstr "Регистрация"
 
-#: cmuxovik/templates/cmuxovik/cmux_form.html:13
+#: cmuxovik/templates/cmuxovik/cmux_confirm_delete.html:8
+msgid "Are you sure you want to delete the cmux"
+msgstr "Вы действительно хотите удалить цмукс"
+
+#: cmuxovik/templates/cmuxovik/cmux_confirm_delete.html:11
+msgid "Yes, delete"
+msgstr "Да, удалить"
+
+#: cmuxovik/templates/cmuxovik/cmux_confirm_delete.html:12
+msgid "Cancel"
+msgstr "Отмена"
+
+#: cmuxovik/templates/cmuxovik/cmux_form.html:9
+msgid "Create a cmux"
+msgstr "Создание цмукса"
+
+#: cmuxovik/templates/cmuxovik/cmux_form.html:11
+msgid ""
+"After you create a cmux, it will be approved by a moderator and you will be "
+"able to see it on the main page."
+msgstr ""
+"Новый цмукс будет одобрен модератором, после чего вы увидите его на главной "
+"странице."
+
+#: cmuxovik/templates/cmuxovik/cmux_form.html:19
 msgid "Save"
 msgstr "Сохранить"
 
@@ -171,7 +222,7 @@ msgstr "Средняя: "
 
 #: cmuxovik/templates/star_ratings/widget_base.html:69
 msgid "Rating Count: "
-msgstr ""
+msgstr "Оценок: "
 
 #: cmuxovik/templates/star_ratings/widget_base.html:72
 msgid "You Rated: "
@@ -193,19 +244,23 @@ msgstr "Главная"
 msgid "The cmux was successfully created!"
 msgstr "Цмукс успешно создан!"
 
-#: cmuxovik/views.py:146
+#: cmuxovik/views.py:137 cmuxovik/views.py:144
+msgid "This cmux already exists."
+msgstr "Такой цмукс уже существует."
+
+#: cmuxovik/views.py:156
 msgid "The cmux was successfully updated!"
-msgstr "Цмукс успешно создан!"
+msgstr "Цмукс успешно обновлен!"
 
-#: cmuxovik/views.py:164
+#: cmuxovik/views.py:173
 msgid "The cmux was successfully deleted."
-msgstr "Цмукс успешно создан!"
+msgstr "Цмукс успешно удален."
 
-#: cmuxovik/views.py:190
+#: cmuxovik/views.py:199
 msgid "This cmux has already been approved."
 msgstr "Цмукс уже подтвержден."
 
-#: cmuxovik/views.py:195
+#: cmuxovik/views.py:204
 msgid "The cmux was approved!"
 msgstr "Цмукс успешно подтвержден!"
 

@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.urls import resolve
-
+from django.db import IntegrityError
 from django.utils.translation import gettext as _
 
 
@@ -137,7 +137,16 @@ class CmuxCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user.author
-        return super().form_valid(form)
+        try:
+            return super().form_valid(form)
+        except IntegrityError:
+            form.add_error('text', _("This cmux already exists."))
+            return super().form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(CmuxCreateView, self).get_context_data(**kwargs)
+        context['tags_exist'] = Tag.objects.count() > 0
+        return context
 
 
 class CmuxUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
@@ -153,8 +162,7 @@ class CmuxUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
         cmux = self.get_object()
         is_author = self.request.user.author == cmux.author
         is_moderator = self.request.user.author.is_moderator
-        post_is_new = not cmux.is_approved
-        if is_author and post_is_new and cmux.is_active:
+        if (is_author or is_moderator) and (not cmux.is_approved) and cmux.is_active:
             return True
         return False
 
