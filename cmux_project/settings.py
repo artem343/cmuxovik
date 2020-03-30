@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
 
-ALLOWED_HOSTS = ['localhost', '68.183.212.10', 'cmux.me' 'cmux.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', '68.183.212.10', 'cmux.me', 'cmux.herokuapp.com']
 
 # Application definition
 
