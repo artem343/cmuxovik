@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-30 01:00+0300\n"
+"POT-Creation-Date: 2020-03-30 18:36+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,10 +21,8 @@ msgstr ""
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: cmuxovik/models.py:65
-#, fuzzy
-#| msgid "Actions"
 msgid "location"
-msgstr "Действия"
+msgstr "город"
 
 #: cmuxovik/models.py:66
 msgid "avatar"
@@ -39,8 +37,6 @@ msgid "tags"
 msgstr "теги"
 
 #: cmuxovik/models.py:106
-#, fuzzy
-#| msgid "New cmux"
 msgid "cmux"
 msgstr "цмукс"
 
@@ -137,6 +133,7 @@ msgstr "Подтвердить"
 #: cmuxovik/templates/cmuxovik/tag_cmuxes.html:42
 #: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:42
 #: cmuxovik/templates/cmuxovik/user_cmuxes.html:42
+#: users/templates/users/profile.html:20
 msgid "Update"
 msgstr "Изменить"
 
@@ -244,25 +241,94 @@ msgstr "Главная"
 msgid "The cmux was successfully created!"
 msgstr "Цмукс успешно создан!"
 
-#: cmuxovik/views.py:137 cmuxovik/views.py:144
+#: cmuxovik/views.py:143
 msgid "This cmux already exists."
 msgstr "Такой цмукс уже существует."
 
-#: cmuxovik/views.py:156
+#: cmuxovik/views.py:155
 msgid "The cmux was successfully updated!"
 msgstr "Цмукс успешно обновлен!"
 
-#: cmuxovik/views.py:173
+#: cmuxovik/views.py:172
 msgid "The cmux was successfully deleted."
 msgstr "Цмукс успешно удален."
 
-#: cmuxovik/views.py:199
+#: cmuxovik/views.py:198
 msgid "This cmux has already been approved."
 msgstr "Цмукс уже подтвержден."
 
-#: cmuxovik/views.py:204
+#: cmuxovik/views.py:203
 msgid "The cmux was approved!"
 msgstr "Цмукс успешно подтвержден!"
 
-#~ msgid "New"
-#~ msgstr "Новые"
+#: users/templates/users/login.html:8 users/templates/users/login.html:12
+msgid "Log In"
+msgstr "Войти"
+
+#: users/templates/users/login.html:14
+msgid "Forgot password?"
+msgstr "Забыли пароль?"
+
+#: users/templates/users/login.html:20
+msgid "Don't have an account?"
+msgstr "Новый пользователь?"
+
+#: users/templates/users/login.html:20
+msgid "Sign up here"
+msgstr "Зарегистрироваться"
+
+#: users/templates/users/logout.html:5
+msgid "You have been logged out."
+msgstr "Вы вышли из аккаунта."
+
+#: users/templates/users/logout.html:8
+msgid "Log in again"
+msgstr "Войдите, чтобы оценить"
+
+#: users/templates/users/password_reset.html:8
+#: users/templates/users/password_reset_confirm.html:8
+#: users/templates/users/password_reset_confirm.html:12
+msgid "Reset password"
+msgstr "Восстановить пароль"
+
+#: users/templates/users/password_reset.html:12
+msgid "Request password reset"
+msgstr "Запросить восстановление пароля"
+
+#: users/templates/users/password_reset_complete.html:5
+msgid "Your password has been reset."
+msgstr "Ваш профиль успешно обновлен!"
+
+#: users/templates/users/password_reset_complete.html:9
+#: users/templates/users/register.html:17
+msgid "Log in"
+msgstr "Войдите, чтобы оценить"
+
+#: users/templates/users/password_reset_done.html:5
+msgid "An email has been sent to you with instructions to reset your password."
+msgstr ""
+"На указанный вами e-mail отправлены инструкции по восстановлению пароля."
+
+#: users/templates/users/profile.html:15
+msgid "Edit profile"
+msgstr "Профиль"
+
+#: users/templates/users/register.html:8
+msgid "Join today!"
+msgstr "Регистрация"
+
+#: users/templates/users/register.html:12
+msgid "Sign Up"
+msgstr "Зарегистрироваться"
+
+#: users/templates/users/register.html:17
+msgid "Already have an account?"
+msgstr "Уже зарегистрированы?"
+
+#: users/views.py:14
+msgid "Your account has been created! You can now log in."
+msgstr "Ваш аккаунт создан! Теперь вы можете войти на сайт."
+
+#: users/views.py:34
+msgid "Your profile has been updated!"
+msgstr "Ваш профиль успешно обновлен!"

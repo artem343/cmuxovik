@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import UserRegisterForm, UserUpdateForm, AuthorUpdateForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
+from django.utils.translation import gettext as _
 
 def register(request):
     if request.method == 'POST':
@@ -11,7 +11,7 @@ def register(request):
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(
-                request, f'Hello {username}, your account has been created! You can now log in.')
+                request, _('Your account has been created! You can now log in.'))
             return redirect('login')
         else:
             pass
@@ -31,7 +31,7 @@ def profile(request):
             u_form.save()
             a_form.save()
             messages.success(
-                request, f'{request.user.username}, your profile has been updated!')
+                request, _('Your profile has been updated!'))
             return redirect('profile')
     else:
         u_form = UserUpdateForm(instance=request.user)

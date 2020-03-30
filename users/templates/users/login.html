@@ -1,23 +1,23 @@
 {% extends 'cmuxovik/base.html' %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags i18n %}
 {% block content %}
 <div class="content-section">
     <form method="post">
         {% csrf_token %}
         <fieldset class="form-group">
-            <legend class="mb-4 border-bottom">Log In</legend>
+            <legend class="mb-4 border-bottom">{% trans 'Log In' %}</legend>
             {{ form|crispy }}
         </fieldset>
         <div class="form-group">
-            <button class="btn btn-info" type="submit">Log In</button>
+            <button class="btn btn-info" type="submit">{% trans 'Log In' %}</button>
             <small class="text-muted ml-2">
-                <a href="{% url 'password_reset' %}">Forgot password?</a>
+                <a href="{% url 'password_reset' %}">{% trans 'Forgot password?' %}</a>
             </small>
         </div>
     </form>
     <div class="border-top pt-3">
         <small class="text-muted">
-            Don't have an account? <a href="{% url 'register' %}" class="ml-2">Sign up here</a>
+            {% trans "Don't have an account?" %} <a href="{% url 'register' %}" class="ml-2">{% trans 'Sign up here' %}</a>
         </small>
     </div>
 </div>

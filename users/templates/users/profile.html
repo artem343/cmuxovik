@@ -1,5 +1,5 @@
 {% extends "cmuxovik/base.html" %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags i18n %}
 {% block content %}
 <div class="content-section">
     <div class="media">
@@ -12,12 +12,12 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <fieldset class="form-group">
-            <legend class="mb-4 border-bottom">Edit profile</legend>
+            <legend class="mb-4 border-bottom">{% trans 'Edit profile' %}</legend>
             {{ u_form|crispy }}
             {{ a_form|crispy }}
         </fieldset>
         <div class="form-group">
-            <button class="btn btn-info" type="submit">Update</button>
+            <button class="btn btn-info" type="submit">{% trans 'Update' %}</button>
         </div>
     </form>
 </div>
