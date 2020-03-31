@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-30 18:36+0300\n"
+"POT-Creation-Date: 2020-03-31 18:51+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,53 +44,69 @@ msgstr "цмукс"
 msgid "author"
 msgstr "автор"
 
-#: cmuxovik/templates/cmuxovik/base.html:20
+#: cmuxovik/templates/cmuxovik/400.html:4
+msgid "Bad request"
+msgstr "Неверный запрос"
+
+#: cmuxovik/templates/cmuxovik/403.html:4
+msgid "You cannot access this page"
+msgstr "У вас нет доступа к этой странице"
+
+#: cmuxovik/templates/cmuxovik/404.html:4
+msgid "The page is not found"
+msgstr "Страница не найдена"
+
+#: cmuxovik/templates/cmuxovik/500.html:4
+msgid "An error has occured on the server"
+msgstr "На сервере возникла ошибка"
+
 #: cmuxovik/templates/cmuxovik/base.html:22
-#: cmuxovik/templates/cmuxovik/base.html:31
+#: cmuxovik/templates/cmuxovik/base.html:24
+#: cmuxovik/templates/cmuxovik/base.html:33
 #: cmuxovik/templates/cmuxovik/home.html:6
 #: cmuxovik/templates/cmuxovik/home.html:8
 msgid "Cmuxovik"
 msgstr "Цмуксовик"
 
-#: cmuxovik/templates/cmuxovik/base.html:40
 #: cmuxovik/templates/cmuxovik/base.html:42
+#: cmuxovik/templates/cmuxovik/base.html:44
 msgid "Search"
 msgstr "Поиск"
 
-#: cmuxovik/templates/cmuxovik/base.html:47
+#: cmuxovik/templates/cmuxovik/base.html:49
 msgid "New cmux"
 msgstr "Добавить цмукс"
 
-#: cmuxovik/templates/cmuxovik/base.html:56
+#: cmuxovik/templates/cmuxovik/base.html:58
 msgid "Language"
 msgstr "Язык"
 
-#: cmuxovik/templates/cmuxovik/base.html:83
+#: cmuxovik/templates/cmuxovik/base.html:85
 msgid "Actions"
 msgstr "Действия"
 
-#: cmuxovik/templates/cmuxovik/base.html:86
+#: cmuxovik/templates/cmuxovik/base.html:88
 msgid "Profile"
 msgstr "Профиль"
 
-#: cmuxovik/templates/cmuxovik/base.html:88
+#: cmuxovik/templates/cmuxovik/base.html:90
 #: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:5 cmuxovik/views.py:122
 msgid "Unapproved cmuxes"
 msgstr "Неподтвержденные цмуксы"
 
-#: cmuxovik/templates/cmuxovik/base.html:90
+#: cmuxovik/templates/cmuxovik/base.html:92
 msgid "Admin"
 msgstr "Админка"
 
-#: cmuxovik/templates/cmuxovik/base.html:94
+#: cmuxovik/templates/cmuxovik/base.html:96
 msgid "Logout"
 msgstr "Выход"
 
-#: cmuxovik/templates/cmuxovik/base.html:98
+#: cmuxovik/templates/cmuxovik/base.html:100
 msgid "Login"
 msgstr "Вход"
 
-#: cmuxovik/templates/cmuxovik/base.html:99
+#: cmuxovik/templates/cmuxovik/base.html:101
 msgid "Register"
 msgstr "Регистрация"
 
@@ -283,7 +299,7 @@ msgstr "Вы вышли из аккаунта."
 
 #: users/templates/users/logout.html:8
 msgid "Log in again"
-msgstr "Войдите, чтобы оценить"
+msgstr "Войти снова"
 
 #: users/templates/users/password_reset.html:8
 #: users/templates/users/password_reset_confirm.html:8

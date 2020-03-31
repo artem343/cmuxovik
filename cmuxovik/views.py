@@ -207,3 +207,23 @@ def approve_cmux(request, pk):
 
 def unapproved_cmuxes_count():
     return Cmux.objects.filter(is_approved=False).count()
+
+
+def error_404(request, exception):
+    data = {}
+    return render(request, 'cmuxovik/404.html', data)
+
+
+def error_500(request):
+    data = {}
+    return render(request, 'cmuxovik/500.html', data)
+
+
+def error_403(request, exception):
+    data = {}
+    return render(request, 'cmuxovik/404.html', data)
+
+
+def error_400(request, exception):
+    data = {}
+    return render(request, 'cmuxovik/500.html', data)

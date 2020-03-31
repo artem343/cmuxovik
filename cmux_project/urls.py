@@ -45,6 +45,10 @@ urlpatterns += i18n_patterns(
     prefix_default_language=False
 )
 
+handler404 = 'cmuxovik.views.error_404'
+handler500 = 'cmuxovik.views.error_500'
+handler403 = 'cmuxovik.views.error_403'
+handler400 = 'cmuxovik.views.error_400'
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
