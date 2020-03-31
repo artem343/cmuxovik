@@ -95,7 +95,7 @@ class Tag(SoftDeleteModel):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name} | {self.domain}"
+        return f"{self.name}"
 
     class Meta:
         verbose_name = _('tag')
