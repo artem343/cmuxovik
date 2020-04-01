@@ -146,6 +146,7 @@ class CmuxCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(CmuxCreateView, self).get_context_data(**kwargs)
         context['tags_exist'] = Tag.objects.count() > 0
+        context['mode'] = 'create'
         return context
 
 
@@ -165,6 +166,12 @@ class CmuxUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
         if (is_author or is_moderator) and (not cmux.is_approved) and cmux.is_active:
             return True
         return False
+
+    def get_context_data(self, **kwargs):
+        context = super(CmuxUpdateView, self).get_context_data(**kwargs)
+        context['tags_exist'] = Tag.objects.count() > 0
+        context['mode'] = 'update'
+        return context
 
 
 class CmuxDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

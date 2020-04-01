@@ -6,7 +6,13 @@
     <form method="post">
         {% csrf_token %}
         <fieldset class="form-group">
-            <legend class="mb-4 border-bottom">{% trans 'Create a cmux' %}</legend>
+            <legend class="mb-4 border-bottom">
+                {% if mode == 'create' %}
+                {% trans 'Create a cmux' %}
+                {% else %}
+                {% trans 'Update the cmux' %}
+                {% endif %}
+            </legend>
             <p>
                 {% trans 'After you create a cmux, it will be approved by a moderator and you will be able to see it on the main page.' %}
             </p>
