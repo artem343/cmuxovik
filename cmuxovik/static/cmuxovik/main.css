@@ -101,3 +101,9 @@ a.article-title:hover {
 #sidebar {
     margin-top: 1rem;
 }
+
+@media screen and (max-width: 767px) {
+    #btn-search {
+        margin: 0.5rem;
+    }
+}

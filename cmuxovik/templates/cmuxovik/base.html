@@ -39,9 +39,15 @@
                     <div class="navbar-nav mr-auto">
                         <!-- Search -->
                         <form class="form-inline" action="{{ request.get_full_path }}" method="get">
-                            <input class="form-control" id="search" type="search" placeholder="{% trans 'Search' %}"
-                                name="search_text" value="{{ request.GET.search_text }}" aria-label="Search">
-                            <input type="submit" value="{% trans 'Search' %}" class="btn btn-outline-secondary" />
+                            <div class="input-group m-2">
+                                <input class="form-control" id="search" type="search" placeholder="{% trans 'Search' %}"
+                                    name="search_text" value="{{ request.GET.search_text }}" aria-label="Search"
+                                    aria-describedby="button-addon2">
+                                <div class="input-group-append">
+                                    <input type="submit" value="{% trans 'Search' %}" class="btn btn-outline-secondary"
+                                        id="button-addon2" />
+                                </div>
+                            </div>
                         </form>
                     </div>
                     <div class="navbar-nav">
@@ -118,7 +124,10 @@
                 {% block content %}{% endblock %}
             </div>
             <div class="col-md-4">
-                {% block sidebar %}{% endblock %}
+                {% block sorting %}
+                {% endblock %}
+                {% block sidebar %}
+                {% endblock %}
             </div>
         </div>
     </main>

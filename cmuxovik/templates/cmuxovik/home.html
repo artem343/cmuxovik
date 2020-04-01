@@ -82,10 +82,12 @@
 </div>
 {% endblock %}
 
+{% block sorting %}
+<a class="btn btn-outline-info" href="{% url 'cmuxovik-newest' %}">{% trans 'Newest' %}</a>
+<a class="btn btn-outline-success" href="{% url 'cmuxovik-best' %}">{% trans 'Best' %}</a>
+{% endblock %}
 {% block sidebar %}
 <div id="sidebar">
-    <a class="btn btn-outline-info" href="{% url 'cmuxovik-newest' %}">{% trans 'Newest' %}</a>
-    <a class="btn btn-outline-success" href="{% url 'cmuxovik-best' %}">{% trans 'Best' %}</a>
     <div class="card shadow bg-white rounded">
         <div class="card-header">
             <div class="mr-auto p-3">
@@ -111,7 +113,7 @@
                 Этого и добиваемся.
             </p>
             <p>
-                «Моим cmux'ам, как драгоценным винам,<br/>
+                «Моим cmux'ам, как драгоценным винам,<br />
                 Настанет свой черёд».
             </p>
         </div>
