@@ -7,14 +7,15 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <meta name="title" content="Цмуксовик">
+    <meta name="description" content="Цмуксовик — сервис цмуксов по мотивам книги «Стих не стих»">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'cmuxovik/main.css' %}">
     <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'cmuxovik/icons/favicon-32x32.png' %}">
-    
+
     <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
     {% block title %}
     {% if title %}
@@ -44,7 +45,8 @@
                         </form>
                     </div>
                     <div class="navbar-nav">
-                        <a class="btn btn-success nav-item nav-link" href="{% url 'cmux-create' %}"><b>{% trans 'New cmux' %}</b></a>
+                        <a class="btn btn-success nav-item nav-link"
+                            href="{% url 'cmux-create' %}"><b>{% trans 'New cmux' %}</b></a>
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav ml-auto">
@@ -84,10 +86,11 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{% url 'profile' %}">{% trans 'Profile' %}</a>
                                 {% if user.author.is_moderator %}
-                                    <a class="dropdown-item" href="{% url 'unapproved-cmuxes' %}">{% trans 'Unapproved cmuxes' %}</a>
-                                    {% if user.is_superuser %}
-                                        <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans 'Admin' %}</a>
-                                    {% endif %}
+                                <a class="dropdown-item"
+                                    href="{% url 'unapproved-cmuxes' %}">{% trans 'Unapproved cmuxes' %}</a>
+                                {% if user.is_superuser %}
+                                <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans 'Admin' %}</a>
+                                {% endif %}
                                 {% endif %}
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{% url 'logout' %}">{% trans 'Logout' %}</a>
