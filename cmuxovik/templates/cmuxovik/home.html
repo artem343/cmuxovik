@@ -17,7 +17,8 @@
         <div class="d-flex">
             <div class="mr-auto p-2">
                 <img class="rounded-circle article-img" src="{{ cmux.author.avatar.url }}">
-                <a class="mr-2" href="{% url 'user-cmuxes' cmux.author.user.username %}">{{ cmux.author.user.username }}</a>
+                <a class="mr-2"
+                    href="{% url 'user-cmuxes' cmux.author.user.username %}">{{ cmux.author.user.username }}</a>
             </div>
             <div class="p-2">
                 <div class="p-2">
@@ -34,9 +35,9 @@
     <div class="card-body">
         <p class="card-text">{{ cmux.text|linebreaksbr }}</p>
         {% if cmux.tags %}
-            {% for tag in cmux.tags.all %}
-                <a class="badge badge-secondary" href="{% url 'tag-cmuxes' tag.id %}">{{ tag }}</a>
-            {% endfor %}
+        {% for tag in cmux.tags.all %}
+        <a class="badge badge-secondary" href="{% url 'tag-cmuxes' tag.id %}">{{ tag }}</a>
+        {% endfor %}
         {% endif %}
     </div>
     {% if not cmux.is_approved %}
@@ -44,11 +45,13 @@
         <div class="d-flex">
             <div class="mr-auto p-2">
                 {% if user.author.is_moderator %}
-                    <a class="btn btn-success btn-sm mr-1" href="{% url 'cmux-approve' cmux.id %}">{% trans 'Approve' %}</a>
+                <a class="btn btn-success btn-sm mr-1" href="{% url 'cmux-approve' cmux.id %}">{% trans 'Approve' %}</a>
                 {% endif %}
                 {% if cmux.author == user.author or user.author.is_moderator %}
-                    <a class="btn btn-outline-secondary btn-sm mr-1" href="{% url 'cmux-update' cmux.id %}">{% trans 'Update' %}</a>
-                    <a class="btn btn-outline-danger btn-sm mr-1" href="{% url 'cmux-delete' cmux.id %}">{% trans 'Delete' %}</a>
+                <a class="btn btn-outline-secondary btn-sm mr-1"
+                    href="{% url 'cmux-update' cmux.id %}">{% trans 'Update' %}</a>
+                <a class="btn btn-outline-danger btn-sm mr-1"
+                    href="{% url 'cmux-delete' cmux.id %}">{% trans 'Delete' %}</a>
                 {% endif %}
             </div>
         </div>
@@ -83,11 +86,32 @@
 <div id="sidebar">
     <a class="btn btn-outline-info" href="{% url 'cmuxovik-newest' %}">{% trans 'Newest' %}</a>
     <a class="btn btn-outline-success" href="{% url 'cmuxovik-best' %}">{% trans 'Best' %}</a>
-    <div class="card bg-white rounded">
-        <p>{% trans 'Welcome' %}</p>
-        <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore laboriosam, dignissimos aliquam suscipit laborum assumenda voluptatibus quam magnam perferendis distinctio, quia voluptas, molestiae veniam pariatur tempore. Repellat impedit officia aspernatur?
-        </p>
+    <div class="card shadow bg-white rounded">
+        <div class="card-header">
+            <div class="mr-auto p-3">
+                <p class="card-text">{% trans 'Welcome!'%}</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <p>
+                Цмукс оказался не игрушкой на одну "книжулю". Он более живуч - это одновременно и отдельный жанр, и наша
+                жизнь.
+            </p>
+            <p>
+                Поэтому цмуксили, цмуксим и будем цмуксить. Обо всем: о личных переживаниях, о новостной и общественной
+                повестке. И просто так.
+            </p>
+            <p>
+                Никакой цензуры или политкорректности. Значение имеют только формы слов и их причудливые сочетания. И
+                если у вас бомбит пукан - взлетайте!
+            </p>
+            <p>
+                Этого и добиваемся.
+            </p>
+            <p>
+                "Моим cmux'ам, как драгоценным винам,
+                Настанет свой черед."
+            </p>
+        </div>
     </div>
-</div>
-{% endblock %}
+    {% endblock %}
