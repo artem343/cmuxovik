@@ -10,13 +10,12 @@
     <meta name="title" content="Цмуксовик">
     <meta name="description" content="Цмуксовик — сервис цмуксов по мотивам книги «Стих не стих»">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{% static 'cmuxovik/main.css' %}">
-    <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'cmuxovik/icons/favicon-32x32.png' %}">
+    <link rel="stylesheet" href="https://storage.yandexcloud.net/cmuxovik-files/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://storage.yandexcloud.net/cmuxovik-files/assets/css/main.css">
+    <link rel="stylesheet" href="https://storage.yandexcloud.net/cmuxovik-files/assets/css/star-ratings.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://storage.yandexcloud.net/cmuxovik-files/assets/img/favicon-32x32.png">
 
-    <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+    <script type="text/javascript" src="https://storage.yandexcloud.net/cmuxovik-files/assets/js/star-ratings.min.js"></script>
     {% block title %}
     {% if title %}
     <title>{% trans "Cmuxovik" %} - {{ title }}</title>
@@ -135,15 +134,9 @@
     {% block footer %}{% endblock %}
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+    <script src="https://storage.yandexcloud.net/cmuxovik-files/assets/js/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://storage.yandexcloud.net/cmuxovik-files/assets/js/popper.min.js"></script>
+    <script src="https://storage.yandexcloud.net/cmuxovik-files/assets/js/bootstrap.min.js"></script>
 
     {% block scripts %}{% endblock %}
 </body>
