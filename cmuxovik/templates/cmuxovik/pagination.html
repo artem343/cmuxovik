@@ -1,0 +1,20 @@
+{% load url_replace i18n %}
+<div class="mt-2">
+    {% if is_paginated %}
+    {% if page_obj.has_previous %}
+    <a class="btn btn-outline-info mb-4" href="?{% url_replace 1 %}">{% trans 'First' %}</a>
+    <a class="btn btn-outline-info mb-4" href="?{% url_replace page_obj.previous_page_number %}">{% trans 'Previous' %}</a>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+    {% if page_obj.number == num %}
+    <a class="btn btn-info mb-4" href="?{% url_replace num %}">{{ num }}</a>
+    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+    <a class="btn btn-outline-info mb-4" href="?{% url_replace num %}">{{ num }}</a>
+    {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+    <a class="btn btn-outline-info mb-4" href="?{% url_replace page_obj.next_page_number %}">{% trans 'Next' %}</a>
+    <a class="btn btn-outline-info mb-4" href="?{% url_replace paginator.num_pages %}">{% trans 'Last' %}</a>
+    {% endif %}
+    {% endif %}
+</div>    

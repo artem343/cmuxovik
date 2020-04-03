@@ -1,16 +1,5 @@
 {% extends 'cmuxovik/base.html' %}
 {% load i18n %}
 {% block content %}
-<div class="card mt-2">
-    <div class="card-header">
-        <img class="rounded-circle article-img" src="{{ object.author.avatar.url }}">
-        <a class="mr-2" href="{% url 'user-cmuxes' object.author.user.username %}">{{ object.author.user.username }}</a>
-    </div>
-    <div class="card-body">
-        <p class="card-text">{{ object.text|linebreaksbr }}</p>
-    </div>
-    <div class="card-footer">
-        <small class="text-muted">{{ object.created_at }}</small>
-    </div>
-</div>
+{% include 'cmuxovik/cmux.html' with cmux=object %}
 {% endblock %}
