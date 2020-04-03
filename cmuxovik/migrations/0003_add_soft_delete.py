@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cmuxovik', '0002_auto_20200307_1750'),
+        ('cmuxovik', '0002_add_author'),
     ]
 
     operations = [

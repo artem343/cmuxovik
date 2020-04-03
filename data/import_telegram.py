@@ -6,7 +6,7 @@ import bs4
 
 SOURCE = 'telegram'
 
-with open('messages.html', 'r') as f:
+with open('telegram_messages.html', 'r') as f:
     contents = f.read()
 
 soup = bs4.BeautifulSoup(contents, 'lxml')
@@ -18,7 +18,7 @@ time = body.find(class_='date')['title']
 author = body.find(class_='from_name').text.strip()
 text = body.find(class_='text').text.strip()
 
-cmuxes = []    
+cmuxes = []
 
 for cmux in soup.find_all(class_=['default']):
     try:
@@ -38,5 +38,5 @@ for cmux in soup.find_all(class_=['default']):
         pass
 
 
-with open('messages.json', 'w', encoding='utf8') as json_file:
+with open('telegram_messages.json', 'w', encoding='utf8') as json_file:
     json.dump(cmuxes, json_file, ensure_ascii=False)
