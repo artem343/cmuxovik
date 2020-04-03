@@ -1,4 +1,4 @@
-{% load ratings i18n %}
+{% load ratings i18n humanize shorten_natural_time %}
 <div class="card shadow bg-white rounded">
     <div class="card-header">
         <div class="d-flex">
@@ -10,7 +10,7 @@
             <div class="p-2">
                 <div class="p-2">
                     <small class="text-muted">
-                        {{ cmux.created_at }}
+                        {{ cmux.created_at | naturaltime | shorten_naturaltime }}
                     </small>
                 </div>
                 <div class="p-2">
