@@ -6,6 +6,8 @@ register = template.Library()
 
 @register.filter
 def shorten_naturaltime(naturaltime):
-    print(naturaltime)
-    naturaltime = re.sub(r',\s\d+\s\w+', '', naturaltime)
+    try:
+        naturaltime = re.sub(r',\s\d+\s\w+', '', naturaltime)
+    except TypeError:
+        pass
     return naturaltime
