@@ -155,15 +155,12 @@ class CmuxUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
     fields = ['text', 'tags']
     success_message = _("The cmux was successfully updated!")
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user.author
-        return super().form_valid(form)
-
     def test_func(self):
         cmux = self.get_object()
         is_author = self.request.user.author == cmux.author
         is_moderator = self.request.user.author.is_moderator
-        if (is_author or is_moderator) and (not cmux.is_approved) and cmux.is_active:
+        # Author can change unapproved cmuxes, Moderator can change all cmuxes
+        if (is_author and cmux.is_active and not cmux.is_approved) or is_moderator:
             return True
         return False
 
