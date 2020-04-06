@@ -34,7 +34,7 @@ for cmux in soup.find_all(class_=['default']):
             'source': SOURCE
         }
         cmuxes.append(d)
-    except:
+    except Exception:
         pass
 
 

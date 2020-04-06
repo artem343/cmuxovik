@@ -65,7 +65,8 @@ class UserCmuxListView(ListView):
             filter_params['text__icontains'] = q
         if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
             exclude_params['is_approved'] = False
-        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by('-ratings__average', '-created_at')
+        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by(
+            '-ratings__average', '-created_at')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -90,7 +91,8 @@ class TagCmuxListView(ListView):
             filter_params['text__icontains'] = q
         if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
             exclude_params['is_approved'] = False
-        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by('-ratings__average', '-created_at')
+        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by(
+            '-ratings__average', '-created_at')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -115,7 +117,8 @@ class UnapprovedCmuxListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
             filter_params['text__icontains'] = q
         if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
             exclude_params['is_approved'] = False
-        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by('-ratings__average', '-created_at')
+        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by(
+            '-ratings__average', '-created_at')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
