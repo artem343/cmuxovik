@@ -111,3 +111,8 @@ static_collected
 
 # Exclude media pictures
 media/profile_pics
+
+# docker envs
+.env.dev
+.env.prod
+.env.test
