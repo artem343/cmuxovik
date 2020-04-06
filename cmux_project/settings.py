@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'star_ratings',
+    'fontawesome_5',
     'storages'
 ]
 

@@ -1,4 +1,4 @@
-{% load ratings i18n humanize shorten_natural_time %}
+{% load ratings i18n humanize shorten_natural_time fontawesome_5 %}
 <div class="card shadow bg-white rounded">
     <div class="card-header">
         <div class="d-flex">
@@ -8,10 +8,21 @@
                     href="{% url 'user-cmuxes' cmux.author.user.username %}">{{ cmux.author.user.username }}</a>
             </div>
             <div class="p-2">
-                <div class="p-2">
-                    <small class="text-muted">
-                        {{ cmux.created_at | naturaltime | shorten_naturaltime }}
-                    </small>
+                <div class="d-flex flex-row justify-content-between">
+                    <div class="p-2 bd-highlight">
+                        <a href="{% url 'cmux-detail' cmux.id %}">
+                            <small class="text-muted">
+                                {{ cmux.created_at | naturaltime | shorten_naturaltime }}
+                            </small>
+                        </a>
+                    </div>
+                    <div class="p-2 bd-highlight">
+                        <a class='share-cmux'
+                        data-clipboard-text="{{ request.scheme }}://{{ request.get_host }}{% url 'cmux-detail' cmux.id %}" 
+                        href="#">
+                            {% fa5_icon 'share-alt' %}
+                        </a>
+                    </div>
                 </div>
                 <div class="p-2">
                     {% ratings cmux icon_width=15 icon_height=15%}
@@ -27,14 +38,14 @@
         {% endfor %}
         {% endif %}
     </div>
-    {% if not cmux.is_approved %}
+    {% if cmux.author == user.author and not cmux.is_approved or user.author.is_moderator %}
     <div class="card-footer">
         <div class="d-flex">
             <div class="mr-auto p-2">
-                {% if user.author.is_moderator %}
+                {% if not cmux.is_approved and user.author.is_moderator %}
                 <a class="btn btn-success btn-sm mr-1" href="{% url 'cmux-approve' cmux.id %}">{% trans 'Approve' %}</a>
                 {% endif %}
-                {% if cmux.author == user.author or user.author.is_moderator %}
+                {% if cmux.author == user.author and not cmux.is_approved or user.author.is_moderator %}
                 <a class="btn btn-outline-secondary btn-sm mr-1"
                     href="{% url 'cmux-update' cmux.id %}">{% trans 'Update' %}</a>
                 <a class="btn btn-outline-danger btn-sm mr-1"
@@ -45,3 +56,7 @@
     </div>
     {% endif %}
 </div>
+
+{% block scripts %}
+
+{% endblock %}
