@@ -110,4 +110,9 @@ a.article-title:hover {
 
 .share-cmux {
     color: #6c757d;
+    cursor: pointer;
+}
+
+a:not([href]):not([tabindex]) {
+    color: #6c757d;
 }
