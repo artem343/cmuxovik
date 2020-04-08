@@ -7,6 +7,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 # Images
 from PIL import Image
 import io
+from django.conf import settings
 from django.core.files.storage import default_storage as storage
 # Star ratings
 from star_ratings.models import Rating
@@ -62,8 +63,10 @@ class SoftDeleteManager(models.Manager):
 class Author(SoftDeleteModel):  # one-to-one to user
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_moderator = models.BooleanField(default=False)
-    location = models.CharField(blank=True, max_length=50, verbose_name=_('location'))
-    avatar = models.ImageField(default='default.jpg', upload_to='profile_pics', verbose_name=_('avatar'))
+    location = models.CharField(
+        blank=True, max_length=50, verbose_name=_('location'))
+    avatar = models.ImageField(
+        default='default.jpg', upload_to='profile_pics', verbose_name=_('avatar'))
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -72,19 +75,24 @@ class Author(SoftDeleteModel):  # one-to-one to user
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        img_read = storage.open(self.avatar.name, 'rb')
-        img = Image.open(img_read)
-
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            in_mem_file = io.BytesIO()
-            img.convert('RGB').save(in_mem_file, format='JPEG')
-            img_write = storage.open(self.avatar.name, 'w+')
-            img_write.write(in_mem_file.getvalue())
-            img_write.close()
-
-        img_read.close()
+        if settings.DEBUG:  # save to media/ locally
+            img = Image.open(self.avatar.path)
+            if img.height > 300 or img.width > 300:
+                output_size = (300, 300)
+                img.thumbnail(output_size)
+                img.save(self.avatar.path)
+        else:  # resize and save to S3
+            img_read = storage.open(self.avatar.name, 'rb')
+            img = Image.open(img_read)
+            if img.height > 300 or img.width > 300:
+                output_size = (300, 300)
+                img.thumbnail(output_size)
+                in_mem_file = io.BytesIO()
+                img.convert('RGB').save(in_mem_file, format='JPEG')
+                img_write = storage.open(self.avatar.name, 'w+')
+                img_write.write(in_mem_file.getvalue())
+                img_write.close()
+            img_read.close()
 
 
 class Tag(SoftDeleteModel):

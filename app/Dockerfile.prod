@@ -5,6 +5,9 @@
 # pull official base image
 FROM python:3.8.0-alpine as builder
 
+# Define requirements file
+ARG requirements=requirements/production.txt
+
 # set work directory
 WORKDIR /usr/src/app
 
@@ -19,15 +22,16 @@ RUN apk update \
     && apk add postgresql-dev \
     && apk add zlib-dev libjpeg
 
-# lint
+
 RUN pip install --upgrade pip
+# lint
 RUN pip install flake8
 COPY . /usr/src/app/
-RUN flake8 --ignore=E501,F401 .
+RUN flake8 --ignore=E501,F401 --exclude=*/migrations/*,*/settings/* . 
 
 # install dependencies
-COPY ./requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+COPY requirements/ /usr/src/app/requirements/
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r $requirements
 
 
 #########
@@ -36,6 +40,9 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 
 # pull official base image
 FROM python:3.8.0-alpine
+
+# Define settings file
+ENV DJANGO_SETTINGS_MODULE=cmux_project.settings.production
 
 # create directory for the app user
 RUN mkdir -p /home/app
@@ -52,13 +59,15 @@ RUN mkdir $APP_HOME/media
 WORKDIR $APP_HOME
 
 # install dependencies
-RUN apk update \
-    && apk add libpq \
-    build-base \
+RUN apk update && apk add libpq \
+    # compile .po
+    gettext \ 
+    # Pillow
     jpeg-dev \
-    zlib-dev
+    zlib-dev 
+
 COPY --from=builder /usr/src/app/wheels /wheels
-COPY --from=builder /usr/src/app/requirements.txt .
+COPY --from=builder /usr/src/app/$requirements .
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 

@@ -25,6 +25,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
+
 urlpatterns += i18n_patterns(
     path("i18n/", include('django.conf.urls.i18n')),
     path("register/", user_views.register, name="register"),

@@ -1,6 +1,12 @@
 # pull official base image
 FROM python:3.8.0-alpine
 
+# Define requirements file
+ARG requirements=requirements/development.txt
+
+# Define settings file
+ENV DJANGO_SETTINGS_MODULE=cmux_project.settings.development
+
 # set work directory
 WORKDIR /usr/src/app
 
@@ -12,13 +18,13 @@ ENV PYTHONUNBUFFERED 1
 RUN apk update \
     && apk add --virtual build-deps jpeg-dev \
     && apk add gcc python3-dev musl-dev \
-    && apk add postgresql-dev \
+    && apk add postgresql-dev gettext \
     && apk add zlib-dev libjpeg
 
 # upgrade pip and install requirements
 RUN pip install --upgrade pip
-COPY ./requirements.txt /usr/src/app/requirements.txt
-RUN pip install -r requirements.txt
+COPY requirements/ /usr/src/app/requirements/
+RUN pip install -r $requirements
 
 # remove Pillow dependencies
 RUN apk del build-deps

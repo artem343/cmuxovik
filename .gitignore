@@ -110,11 +110,10 @@ static/
 .vscode/
 
 # Exclude media pictures
-media/profile_pics
+*/media/profile_pics
 
 # Docker envs
 .env.dev
 .env.test
-.env.test.db
 .env.prod
 .env.prod.db
