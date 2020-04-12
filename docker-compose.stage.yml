@@ -27,12 +27,12 @@ services:
     build:
       context: ./nginx
       args:
-        conf_file: prod.conf
+        conf_file: stage.conf
     volumes:
       - static_volume:/home/app/web/static
       - static_volume:/home/app/web/media
     ports:
-      - 80:80
+      - 1337:80
     depends_on:
       - web
 

@@ -11,7 +11,7 @@ then
     echo "PostgreSQL started"
 fi
 
-python manage.py compilemessages 
+python manage.py compilemessages -l ru_RU
 python manage.py collectstatic --no-input --clear
 
 exec "$@"

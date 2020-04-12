@@ -67,7 +67,7 @@ RUN apk update && apk add libpq \
     zlib-dev 
 
 COPY --from=builder /usr/src/app/wheels /wheels
-COPY --from=builder /usr/src/app/$requirements .
+COPY --from=builder /usr/src/app/requirements .
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 
