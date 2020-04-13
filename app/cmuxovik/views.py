@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
-from .models import Cmux, Tag
+from .models import Cmux, Tag, Rating
 from django.contrib.auth.models import User
 from django.views.generic import (
     ListView,
@@ -17,6 +17,8 @@ from django.urls import resolve
 from django.db import IntegrityError
 from django.utils.translation import gettext as _
 
+from django.db.models import Avg, F, Value, FloatField, ExpressionWrapper
+
 
 class CmuxListView(ListView):
     model = Cmux
@@ -27,20 +29,36 @@ class CmuxListView(ListView):
     def get_queryset(self):
         # Filtering
         filter_params, exclude_params = {}, {}
+
         filter_params['is_active'] = True
+
         q = self.request.GET.get('search_text', None)
         if q:
             filter_params['text__icontains'] = q
+
         if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
             exclude_params['is_approved'] = False
-        # Ordering
-        # TODO: sometimes doesnt work just after the migration when switching locale
+
         url_name = resolve(self.request.path).url_name
-        if url_name == 'cmuxovik-best':
-            order_by_list = ['-ratings__average', '-created_at']
-        else:
+        if url_name == 'cmuxovik-best':  # Order by rating
+            # IMDb-like formula for true_rating
+            # (R * v + C * m) / (v + m);
+            filter_params['ratings__isnull'] = False
+            annotate_params = {}
+            # Average of all ratings for all cmuxes (C)
+            C = Rating.objects.all().aggregate(Avg('average'))['average__avg']
+            annotate_params['v'] = F("ratings__count")
+            annotate_params['R'] = F("ratings__average")
+            annotate_params['true_rating'] = ExpressionWrapper(
+                (F('R') * F('v') + C * 1) / (F('v') + 1), output_field=FloatField()
+            )
+            return Cmux.objects.filter(**filter_params) \
+                .exclude(**exclude_params) \
+                .annotate(**annotate_params) \
+                .order_by("-true_rating")
+        else:  # Order by date created
             order_by_list = ['-created_at']
-        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by(*order_by_list)
+            return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by(*order_by_list)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
