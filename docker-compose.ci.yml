@@ -20,9 +20,7 @@ services:
     depends_on:
       - db
   db:
-    cache_from:
-      - "${DB_IMAGE}"
-    image: "${DB_IMAGE}"
+    image: postgres:12.0-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file: .env.db
@@ -31,8 +29,8 @@ services:
       context: ./nginx
       args:
         conf_file: prod.conf
-        cache_from:
-          - "${NGINX_IMAGE}"
+      cache_from:
+        - "${NGINX_IMAGE}"
     image: "${NGINX_IMAGE}"
     volumes:
       - static_volume:/home/app/web/static
