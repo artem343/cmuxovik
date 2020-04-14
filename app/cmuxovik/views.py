@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
-from .models import Cmux, Tag
+from .models import Cmux, Tag, Rating
 from django.contrib.auth.models import User
 from django.views.generic import (
     ListView,
@@ -24,49 +24,61 @@ class CmuxListView(ListView):
     context_object_name = 'cmuxes'
     paginate_by = 10
 
-    def get_queryset(self):
-        # Filtering
-        filter_params, exclude_params = {}, {}
-        filter_params['is_active'] = True
-        q = self.request.GET.get('search_text', None)
-        if q:
-            filter_params['text__icontains'] = q
-        if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
-            exclude_params['is_approved'] = False
-        # Ordering
-        # TODO: sometimes doesnt work just after the migration when switching locale
-        url_name = resolve(self.request.path).url_name
-        if url_name == 'cmuxovik-best':
-            order_by_list = ['-ratings__average', '-created_at']
-        else:
-            order_by_list = ['-created_at']
-        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by(*order_by_list)
-
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = _('Homepage')
         return context
 
 
-class UserCmuxListView(ListView):
+class BestCmuxListView(CmuxListView):
+
+    def get_queryset(self):
+        filter_params, exclude_params = {}, {}
+
+        q = self.request.GET.get('search_text', None)
+        if q:
+            filter_params['text__icontains'] = q
+
+        if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
+            exclude_params['is_approved'] = False
+
+        return Cmux.best_objects.filter(**filter_params).exclude(**exclude_params)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = _('Best')
+        return context
+
+
+class NewestCmuxListView(CmuxListView):
+
+    def get_queryset(self):
+        filter_params, exclude_params = {}, {}
+
+        q = self.request.GET.get('search_text', None)
+        if q:
+            filter_params['text__icontains'] = q
+
+        if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
+            exclude_params['is_approved'] = False
+
+        return Cmux.objects.filter(**filter_params).exclude(**exclude_params)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = _('Newest')
+        return context
+
+
+class UserCmuxListView(NewestCmuxListView):
     model = Cmux
     template_name = 'cmuxovik/user_cmuxes.html'
     context_object_name = 'cmuxes'
-    ordering = ['-ratings__average', '-created_at']
     paginate_by = 10
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
-        filter_params, exclude_params = {}, {}
-        filter_params['is_active'] = True
-        filter_params['author'] = user.author
-        q = self.request.GET.get('search_text', None)
-        if q:
-            filter_params['text__icontains'] = q
-        if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
-            exclude_params['is_approved'] = False
-        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by(
-            '-ratings__average', '-created_at')
+        return super().get_queryset().filter(author=user.author)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -74,25 +86,15 @@ class UserCmuxListView(ListView):
         return context
 
 
-class TagCmuxListView(ListView):
+class TagCmuxListView(NewestCmuxListView):
     model = Cmux
     template_name = 'cmuxovik/tag_cmuxes.html'
     context_object_name = 'cmuxes'
-    ordering = ['-ratings__average', '-created_at']
     paginate_by = 10
 
     def get_queryset(self):
         tag = get_object_or_404(Tag, pk=self.kwargs.get('pk'))
-        filter_params, exclude_params = {}, {}
-        filter_params['is_active'] = True
-        filter_params['tags__id'] = tag.id
-        q = self.request.GET.get('search_text', None)
-        if q:
-            filter_params['text__icontains'] = q
-        if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
-            exclude_params['is_approved'] = False
-        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by(
-            '-ratings__average', '-created_at')
+        return super().get_queryset().filter(tags__id=tag.id)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -101,24 +103,14 @@ class TagCmuxListView(ListView):
         return context
 
 
-class UnapprovedCmuxListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+class UnapprovedCmuxListView(LoginRequiredMixin, UserPassesTestMixin, NewestCmuxListView):
     model = Cmux
     template_name = 'cmuxovik/unapproved_cmuxes.html'
     context_object_name = 'cmuxes'
-    ordering = ['-created_at']
     paginate_by = 10
 
     def get_queryset(self):
-        filter_params, exclude_params = {}, {}
-        filter_params['is_active'] = True
-        filter_params['is_approved'] = False
-        q = self.request.GET.get('search_text', None)
-        if q:
-            filter_params['text__icontains'] = q
-        if self.request.user.is_anonymous or not self.request.user.author.is_moderator:
-            exclude_params['is_approved'] = False
-        return Cmux.objects.filter(**filter_params).exclude(**exclude_params).order_by(
-            '-ratings__average', '-created_at')
+        return super().get_queryset().filter(is_approved=False)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -157,6 +149,14 @@ class CmuxUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
     model = Cmux
     fields = ['text', 'tags']
     success_message = _("The cmux was successfully updated!")
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user.author
+        try:
+            return super().form_valid(form)
+        except IntegrityError:
+            form.add_error('text', _("This cmux already exists."))
+            return super().form_invalid(form)
 
     def test_func(self):
         cmux = self.get_object()

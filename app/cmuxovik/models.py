@@ -13,6 +13,8 @@ from django.core.files.storage import default_storage as storage
 from star_ratings.models import Rating
 from django.utils.translation import gettext_lazy as _
 
+from django.db.models import Avg, F, Value, FloatField, ExpressionWrapper
+
 
 class SoftDeleteModel(models.Model):
     class Meta:
@@ -110,6 +112,32 @@ class Tag(SoftDeleteModel):
         verbose_name_plural = _('tags')
 
 
+class CmuxManager(models.Manager):
+    def get_queryset(self):
+        filter_params = {}
+        filter_params['is_active'] = True
+        return super().get_queryset().filter(**filter_params).order_by('-created_at')
+
+
+class BestCmuxManager(CmuxManager):
+    def get_queryset(self):
+        # IMDb-like formula for true_rating
+        # (R * v + C * m) / (v + m);
+        filter_params, annotate_params = {}, {}
+        filter_params['ratings__isnull'] = False
+        annotate_params = {}
+        # Average of all ratings for all cmuxes (C)
+        C = Rating.objects.all().aggregate(Avg('average'))['average__avg']
+        annotate_params['v'] = F("ratings__count")
+        annotate_params['R'] = F("ratings__average")
+        annotate_params['true_rating'] = ExpressionWrapper(
+            (F('R') * F('v') + C * 1) / (F('v') + 1), output_field=FloatField()
+        )
+        return super().get_queryset().filter(**filter_params) \
+            .annotate(**annotate_params) \
+            .order_by("-true_rating")
+
+
 class Cmux(SoftDeleteModel):
     text = models.TextField(verbose_name=_('cmux'))
     author = models.ForeignKey(
@@ -120,6 +148,9 @@ class Cmux(SoftDeleteModel):
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
     ratings = GenericRelation(Rating, related_query_name='cmuxes')
+
+    objects = CmuxManager()
+    best_objects = BestCmuxManager()
 
     class Meta:
         unique_together = ('text', 'is_active')

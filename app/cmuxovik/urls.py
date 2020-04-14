@@ -2,6 +2,8 @@ from django.urls import path
 from cmuxovik import views
 from .views import (
     CmuxListView,
+    BestCmuxListView,
+    NewestCmuxListView,
     CmuxDetailView,
     CmuxCreateView,
     CmuxUpdateView,
@@ -12,9 +14,9 @@ from .views import (
 )
 
 urlpatterns = [
-    path("", CmuxListView.as_view(), name="cmuxovik-home"),
-    path("best/", CmuxListView.as_view(), name="cmuxovik-best"),
-    path("newest/", CmuxListView.as_view(), name="cmuxovik-newest"),
+    path("", NewestCmuxListView.as_view(), name="cmuxovik-home"),
+    path("best/", BestCmuxListView.as_view(), name="cmuxovik-best"),
+    path("newest/", NewestCmuxListView.as_view(), name="cmuxovik-newest"),
     path("user/<str:username>/", UserCmuxListView.as_view(), name="user-cmuxes"),
     path("tag/<int:pk>/", TagCmuxListView.as_view(), name="tag-cmuxes"),
     path("unapproved/", UnapprovedCmuxListView.as_view(), name="unapproved-cmuxes"),
