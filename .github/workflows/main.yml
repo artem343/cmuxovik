@@ -5,7 +5,6 @@ on: [push]
 env:
   WEB_IMAGE: docker.pkg.github.com/$GITHUB_REPOSITORY/web
   NGINX_IMAGE: docker.pkg.github.com/$GITHUB_REPOSITORY/nginx
-  DB_IMAGE: docker.pkg.github.com/$GITHUB_REPOSITORY/db
 
 jobs:
   build:
@@ -32,7 +31,6 @@ jobs:
         run: |
           echo ::set-env name=WEB_IMAGE::${{ env.WEB_IMAGE }}
           echo ::set-env name=NGINX_IMAGE::${{ env.NGINX_IMAGE }}
-          echo ::set-env name=DB_IMAGE::${{ env.DB_IMAGE }}
       - name: Log in to GitHub Packages
         run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
         env:
@@ -41,7 +39,6 @@ jobs:
         run: |
           docker pull ${{ env.WEB_IMAGE }} || true
           docker pull ${{ env.NGINX_IMAGE }} || true
-          docker pull ${{ env.DB_IMAGE }} || true
       - name: Build images
         run: |
           docker-compose -f docker-compose.ci.yml build
@@ -49,4 +46,3 @@ jobs:
         run: |
           docker push ${{ env.WEB_IMAGE }}
           docker push ${{ env.NGINX_IMAGE }}
-          docker push ${{ env.DB_IMAGE }}
