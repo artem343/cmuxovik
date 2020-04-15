@@ -80,12 +80,13 @@ jobs:
       - name: Build and deploy images on Stage server
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose.stage.yml ${{ secrets.TEST_SERVER_USER }}@${{ secrets.TEST_SERVER_IP }}:~/cmuxovik
           ssh -o StrictHostKeyChecking=no ${{ secrets.TEST_SERVER_USER }}@${{ secrets.TEST_SERVER_IP }} << 'ENDSSH'
             cd ~/cmuxovik
             source .env
-            docker login docker.pkg.github.com -u ${GITHUB_ACTOR} -p ${{ secrets.GITHUB_TOKEN }}
+            echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
             docker pull $WEB_IMAGE
             docker pull $NGINX_IMAGE
             docker-compose -f docker-compose.stage.yml up -d
