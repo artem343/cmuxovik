@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Checkout master
+      - name: Checkout develop branch
         uses: actions/checkout@v2
       - name: Add environment variables to .env
         run: |

@@ -16,21 +16,22 @@ jobs:
     steps:
       - name: Checkout master
         uses: actions/checkout@v1
-      - name: Add environment variables to .env
+      - name: Add environment variables to .env.prod and .env.prod.db
         run: |
           echo DEBUG=0 >> .env
-          echo SQL_ENGINE=django.db.backends.postgresql >> .env
-          echo DATABASE=postgres >> .env
-          echo SECRET_KEY=${{ secrets.PROD_SECRET_KEY }} >> .env
-          echo SQL_DATABASE=${{ secrets.PROD_SQL_DATABASE }} >> .env
-          echo SQL_USER=${{ secrets.PROD_SQL_USER }} >> .env
-          echo SQL_PASSWORD=${{ secrets.PROD_SQL_PASSWORD }} >> .env
-          echo SQL_HOST=${{ secrets.PROD_SQL_HOST }} >> .env
-          echo POSTGRES_USER=${{ secrets.PROD_SQL_USER }} >> .env.db
-          echo POSTGRES_PASSWORD=${{ secrets.PROD_SQL_PASSWORD }} >> .env.db
-          echo POSTGRES_DB=${{ secrets.PROD_SQL_DATABASE }} >> .env.db
-          echo WEB_IMAGE=${{ env.WEB_IMAGE }} >> .env
-          echo NGINX_IMAGE=${{ env.NGINX_IMAGE }} >> .env
+          echo SQL_ENGINE=django.db.backends.postgresql >> .env.prod
+          echo DATABASE=postgres >> .env.prod
+          echo SECRET_KEY=${{ secrets.PROD_SECRET_KEY }} >> .env.prod
+          echo SQL_DATABASE=${{ secrets.PROD_SQL_DATABASE }} >> .env.prod
+          echo SQL_USER=${{ secrets.PROD_SQL_USER }} >> .env.prod
+          echo SQL_PASSWORD=${{ secrets.PROD_SQL_PASSWORD }} >> .env.prod
+          echo SQL_HOST=${{ secrets.PROD_SQL_HOST }} >> .env.prod
+          echo SQL_PORT=${{ secrets.PROD_SQL_PORT }} >> .env.prod
+          echo WEB_IMAGE=${{ env.WEB_IMAGE }} >> .env.prod
+          echo NGINX_IMAGE=${{ env.NGINX_IMAGE }} >> .env.prod
+          echo POSTGRES_USER=${{ secrets.PROD_SQL_USER }} >> .env.prod.db
+          echo POSTGRES_PASSWORD=${{ secrets.PROD_SQL_PASSWORD }} >> .env.prod.db
+          echo POSTGRES_DB=${{ secrets.PROD_SQL_DATABASE }} >> .env.prod.db
       - name: Add the private SSH key to the ssh-agent
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -43,10 +44,11 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_IP }}:~/cmuxovik
+          scp  -o StrictHostKeyChecking=no -r ./.env.prod ./.env.prod.db ./docker-compose.prod.yml ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_IP }}:~/cmuxovik
           ssh -o StrictHostKeyChecking=no ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_IP }} << 'ENDSSH'
             cd ~/cmuxovik
-            source .env
+            source .env.prod
+            source .env.prod.db
             docker login docker.pkg.github.com -u ${GITHUB_ACTOR} -p ${{ secrets.GITHUB_TOKEN }}
             docker pull $WEB_IMAGE
             docker pull $NGINX_IMAGE
