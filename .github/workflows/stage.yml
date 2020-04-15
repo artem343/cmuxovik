@@ -1,6 +1,9 @@
-name: Continuous Integration and Delivery
+name: staging
 
-on: [push]
+on:
+  push:
+    branches:
+      - develop
 
 env:
   WEB_IMAGE: docker.pkg.github.com/$GITHUB_REPOSITORY/web
@@ -11,8 +14,8 @@ jobs:
     name: Build Docker Images
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout master
-        uses: actions/checkout@v1
+      - name: Checkout develop branch
+        uses: actions/checkout@v2
       - name: Add environment variables to .env
         run: |
           echo DEBUG=0 >> .env
@@ -52,7 +55,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout master
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Add environment variables to .env
         run: |
           echo DEBUG=0 >> .env
@@ -74,7 +77,7 @@ jobs:
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-add - <<< "${{ secrets.PRIVATE_KEY }}"
-      - name: Build and deploy images on Cloud server
+      - name: Build and deploy images on Stage server
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
@@ -82,7 +85,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.TEST_SERVER_USER }}@${{ secrets.TEST_SERVER_IP }} << 'ENDSSH'
             cd ~/cmuxovik
             source .env
-            docker login docker.pkg.github.com -u artem343 -p ${{ secrets.GITHUB_TOKEN }}
+            docker login docker.pkg.github.com -u ${GITHUB_ACTOR} -p ${{ secrets.GITHUB_TOKEN }}
             docker pull $WEB_IMAGE
             docker pull $NGINX_IMAGE
             docker-compose -f docker-compose.stage.yml up -d
