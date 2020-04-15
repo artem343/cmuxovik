@@ -78,9 +78,9 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose.stage.yml ${{ secrets.TEST_SERVER_USER }}@${{ secrets.TEST_SERVER_IP }}:/app
+          scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose.stage.yml ${{ secrets.TEST_SERVER_USER }}@${{ secrets.TEST_SERVER_IP }}:~/app
           ssh -o StrictHostKeyChecking=no ${{ secrets.TEST_SERVER_USER }}@${{ secrets.TEST_SERVER_IP }} << 'ENDSSH'
-            cd /app
+            cd ~/app
             source .env
             docker login docker.pkg.github.com -u artem343 -p ${{ secrets.GITHUB_TOKEN }}
             docker pull $WEB_IMAGE
