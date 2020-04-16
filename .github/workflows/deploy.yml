@@ -14,7 +14,6 @@ jobs:
   deploy:
     name: Deploy to Prod server
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: Checkout dev # TODO: change to master
         uses: actions/checkout@v1
