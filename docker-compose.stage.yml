@@ -1,36 +1,29 @@
-version: "3"
+version: "3.7"
 
 services:
   web:
-    build:
-      context: ./app
-      args:
-        requirements: requirements/development.txt
-      dockerfile: Dockerfile.prod
+    image: "${WEB_IMAGE}"
     command: gunicorn cmux_project.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/app/web/static
-      - static_volume:/home/app/web/media
     expose:
       - 8000
     env_file:
-      - ./.env.prod
+      - ./.env.stage
     depends_on:
       - db
   db:
     image: postgres:12.0-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5433:5432
     env_file:
-      - ./.env.prod.db
+      - ./.env.stage.db
   nginx:
-    build:
-      context: ./nginx
-      args:
-        conf_file: stage.conf
+    image: "${NGINX_IMAGE}"
     volumes:
       - static_volume:/home/app/web/static
-      - static_volume:/home/app/web/media
     ports:
       - 1337:80
     depends_on:
@@ -39,4 +32,3 @@ services:
 volumes:
   postgres_data:
   static_volume:
-  media_volume:

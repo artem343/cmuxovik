@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - develop
+  # pull_request:
+  #   branches:
+  #     - master
 
 env:
   WEB_IMAGE: docker.pkg.github.com/$GITHUB_REPOSITORY/web
@@ -16,20 +19,33 @@ jobs:
     steps:
       - name: Checkout develop branch
         uses: actions/checkout@v2
-      - name: Add environment variables to .env
+      - name: Add environment variables to .envs
         run: |
-          echo DEBUG=0 >> .env
-          echo SQL_ENGINE=django.db.backends.postgresql >> .env
-          echo DATABASE=postgres >> .env
-          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-          echo SQL_DATABASE=${{ secrets.SQL_DATABASE }} >> .env
-          echo SQL_USER=${{ secrets.SQL_USER }} >> .env
-          echo SQL_PASSWORD=${{ secrets.SQL_PASSWORD }} >> .env
-          echo SQL_HOST=${{ secrets.SQL_HOST }} >> .env
-          echo SQL_PORT=${{ secrets.SQL_PORT }} >> .env
-          echo POSTGRES_USER=${{ secrets.SQL_USER }} >> .env.db
-          echo POSTGRES_PASSWORD=${{ secrets.SQL_PASSWORD }} >> .env.db
-          echo POSTGRES_DB=${{ secrets.SQL_DATABASE }} >> .env.db
+          echo DEBUG=0 >> .env.stage
+          echo SECRET_KEY=${{ secrets.STAGE_SECRET_KEY }} >> .env.stage
+          echo DJANGO_ALLOWED_HOSTS=${{ secrets.STAGE_ALLOWED_HOSTS }} >> .env.stage
+
+          echo SQL_ENGINE=django.db.backends.postgresql >> .env.stage
+          echo SQL_DATABASE=${{ secrets.STAGE_SQL_DATABASE }} >> .env.stage
+          echo SQL_USER=${{ secrets.STAGE_SQL_USER }} >> .env.stage
+          echo SQL_PASSWORD=${{ secrets.STAGE_SQL_PASSWORD }} >> .env.stage
+          echo SQL_HOST=${{ secrets.STAGE_SQL_HOST }} >> .env.stage
+          echo SQL_PORT=${{ secrets.STAGE_SQL_PORT }} >> .env.stage
+
+          echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> .env.stage
+          echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env.stage
+          echo AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }} >> .env.stage
+          echo EMAIL_USER=${{ secrets.EMAIL_USER }} >> .env.stage
+          echo EMAIL_PASS=${{ secrets.EMAIL_PASS }} >> .env.stage
+
+          echo DATABASE=postgres >> .env.stage
+
+          echo WEB_IMAGE=${{ env.WEB_IMAGE }} >> .env.stage
+          echo NGINX_IMAGE=${{ env.NGINX_IMAGE }} >> .env.stage
+
+          echo POSTGRES_USER=${{ secrets.STAGE_SQL_USER }} >> .env.stage.db
+          echo POSTGRES_PASSWORD=${{ secrets.STAGE_SQL_PASSWORD }} >> .env.stage.db
+          echo POSTGRES_DB=${{ secrets.STAGE_SQL_DATABASE }} >> .env.stage.db
       - name: Set environment variables
         run: |
           echo ::set-env name=WEB_IMAGE::${{ env.WEB_IMAGE }}
@@ -58,17 +74,31 @@ jobs:
         uses: actions/checkout@v2
       - name: Add environment variables to .env
         run: |
-          echo DEBUG=0 >> .env
-          echo SQL_ENGINE=django.db.backends.postgresql >> .env
-          echo DATABASE=postgres >> .env
-          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-          echo SQL_DATABASE=${{ secrets.SQL_DATABASE }} >> .env
-          echo SQL_USER=${{ secrets.SQL_USER }} >> .env
-          echo SQL_PASSWORD=${{ secrets.SQL_PASSWORD }} >> .env
-          echo SQL_HOST=${{ secrets.SQL_HOST }} >> .env
-          echo SQL_PORT=${{ secrets.SQL_PORT }} >> .env
-          echo WEB_IMAGE=${{ env.WEB_IMAGE }} >> .env
-          echo NGINX_IMAGE=${{ env.NGINX_IMAGE }} >> .env
+          echo DEBUG=0 >> .env.stage
+          echo SECRET_KEY=${{ secrets.STAGE_SECRET_KEY }} >> .env.stage
+          echo DJANGO_ALLOWED_HOSTS=${{ secrets.STAGE_ALLOWED_HOSTS }} >> .env.stage
+
+          echo SQL_ENGINE=django.db.backends.postgresql >> .env.stage
+          echo SQL_DATABASE=${{ secrets.STAGE_SQL_DATABASE }} >> .env.stage
+          echo SQL_USER=${{ secrets.STAGE_SQL_USER }} >> .env.stage
+          echo SQL_PASSWORD=${{ secrets.STAGE_SQL_PASSWORD }} >> .env.stage
+          echo SQL_HOST=${{ secrets.STAGE_SQL_HOST }} >> .env.stage
+          echo SQL_PORT=${{ secrets.STAGE_SQL_PORT }} >> .env.stage
+
+          echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> .env.stage
+          echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env.stage
+          echo AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }} >> .env.stage
+          echo EMAIL_USER=${{ secrets.EMAIL_USER }} >> .env.stage
+          echo EMAIL_PASS=${{ secrets.EMAIL_PASS }} >> .env.stage
+
+          echo DATABASE=postgres >> .env.stage
+
+          echo WEB_IMAGE=${{ env.WEB_IMAGE }} >> .env.stage
+          echo NGINX_IMAGE=${{ env.NGINX_IMAGE }} >> .env.stage
+
+          echo POSTGRES_USER=${{ secrets.STAGE_SQL_USER }} >> .env.stage.db
+          echo POSTGRES_PASSWORD=${{ secrets.STAGE_SQL_PASSWORD }} >> .env.stage.db
+          echo POSTGRES_DB=${{ secrets.STAGE_SQL_DATABASE }} >> .env.stage.db
       - name: Add the private SSH key to the ssh-agent
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -76,17 +106,18 @@ jobs:
           mkdir -p ~/.ssh
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-add - <<< "${{ secrets.PRIVATE_KEY }}"
+          ssh-add - <<< "${{ secrets.STAGE_PRIVATE_KEY }}"
       - name: Build and deploy images on Stage server
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose.stage.yml ${{ secrets.TEST_SERVER_USER }}@${{ secrets.TEST_SERVER_IP }}:~/cmuxovik
-          ssh -o StrictHostKeyChecking=no ${{ secrets.TEST_SERVER_USER }}@${{ secrets.TEST_SERVER_IP }} << 'ENDSSH'
+          scp  -o StrictHostKeyChecking=no -r ./.env.stage ./.env.stage.prod ./docker-compose.stage.yml ${{ secrets.STAGE_SERVER_USER }}@${{ secrets.STAGE_SERVER_IP }}:~/cmuxovik
+          ssh -o StrictHostKeyChecking=no ${{ secrets.STAGE_SERVER_USER }}@${{ secrets.STAGE_SERVER_IP }} << 'ENDSSH'
             cd ~/cmuxovik
-            source .env
+            source .env.stage
+            source .env.stage.prod
             docker login docker.pkg.github.com -u ${GITHUB_ACTOR} -p ${{ secrets.GITHUB_TOKEN }}
             docker pull $WEB_IMAGE
             docker pull $NGINX_IMAGE
-            docker-compose -f docker-compose.stage.yml up -d
+            docker-compose -f docker-compose.stage.yml -p cmux-stage up -d
           ENDSSH
