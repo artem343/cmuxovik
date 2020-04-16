@@ -2,11 +2,7 @@ version: "3.7"
 
 services:
   web:
-    build:
-      context: ./app
-      args:
-        requirements: requirements/development.txt
-      dockerfile: Dockerfile.prod
+    image: "${WEB_IMAGE}"
     command: gunicorn cmux_project.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/app/web/static
@@ -25,10 +21,7 @@ services:
     env_file:
       - ./.env.prod.db
   nginx:
-    build:
-      context: ./nginx
-      args:
-        conf_file: prod.conf
+    image: "${NGINX_IMAGE}"
     volumes:
       - static_volume:/home/app/web/static
     ports:
