@@ -54,13 +54,14 @@ jobs:
       - name: Build and deploy images on Prod server
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           scp  -o StrictHostKeyChecking=no -r ./.env.prod ./.env.prod.db ./docker-compose.prod.yml ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_IP }}:~/cmuxovik
           ssh -o StrictHostKeyChecking=no ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_IP }} << 'ENDSSH'
             cd ~/cmuxovik
             source .env.prod
             source .env.prod.db
-            docker login -u ${GITHUB_ACTOR} -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
+            docker login -u ${GITHUB_ACTOR} -p ${GITHUB_TOKEN} docker.pkg.github.com
             docker pull $WEB_IMAGE
             docker pull $NGINX_IMAGE
             docker-compose -f docker-compose.prod.yml -p cmux-prod up -d
