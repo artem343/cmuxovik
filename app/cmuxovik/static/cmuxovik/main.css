@@ -116,3 +116,7 @@ a.article-title:hover {
 a:not([href]):not([tabindex]) {
     color: #6c757d;
 }
+
+.star-ratings-rating-stars-container {
+    vertical-align: middle;
+}
