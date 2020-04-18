@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - develop
-  # pull_request:
-  #   branches:
-  #     - master
 
 env:
   WEB_IMAGE: docker.pkg.github.com/$GITHUB_REPOSITORY/web
@@ -115,7 +112,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.STAGE_SERVER_USER }}@${{ secrets.STAGE_SERVER_IP }} << 'ENDSSH'
             cd ~/cmuxovik
             source .env.stage
-            source .env.stage.prod
+            source .env.stage.db
             docker login -u ${GITHUB_ACTOR} -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
             docker pull $WEB_IMAGE
             docker pull $NGINX_IMAGE

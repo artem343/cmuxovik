@@ -1,0 +1,71 @@
+name: production deployment
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  WEB_IMAGE: docker.pkg.github.com/$GITHUB_REPOSITORY/web
+  NGINX_IMAGE: docker.pkg.github.com/$GITHUB_REPOSITORY/nginx
+
+jobs:
+  deploy:
+    name: Deploy to Prod server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v1
+      - name: Add environment variables to .env.prod and .env.prod.db
+        run: |
+          echo DEBUG=0 >> .env
+          echo SECRET_KEY=${{ secrets.PROD_SECRET_KEY }} >> .env.prod
+          echo DJANGO_ALLOWED_HOSTS=cmux.me localhost 127.0.0.1 [::1] >> .env.prod
+
+          echo SQL_ENGINE=django.db.backends.postgresql >> .env.prod
+          echo SQL_DATABASE=${{ secrets.PROD_SQL_DATABASE }} >> .env.prod
+          echo SQL_USER=${{ secrets.PROD_SQL_USER }} >> .env.prod
+          echo SQL_PASSWORD=${{ secrets.PROD_SQL_PASSWORD }} >> .env.prod
+          echo SQL_HOST=${{ secrets.PROD_SQL_HOST }} >> .env.prod
+          echo SQL_PORT=${{ secrets.PROD_SQL_PORT }} >> .env.prod
+
+          echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> .env.prod
+          echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env.prod
+          echo AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }} >> .env.prod
+          echo EMAIL_USER=${{ secrets.EMAIL_USER }} >> .env.prod
+          echo EMAIL_PASS=${{ secrets.EMAIL_PASS }} >> .env.prod
+
+          echo DATABASE=postgres >> .env.prod
+
+          echo WEB_IMAGE=${{ env.WEB_IMAGE }} >> .env.prod
+          echo NGINX_IMAGE=${{ env.NGINX_IMAGE }} >> .env.prod
+
+          echo POSTGRES_USER=${{ secrets.PROD_SQL_USER }} >> .env.prod.db
+          echo POSTGRES_PASSWORD=${{ secrets.PROD_SQL_PASSWORD }} >> .env.prod.db
+          echo POSTGRES_DB=${{ secrets.PROD_SQL_DATABASE }} >> .env.prod.db
+      - name: Add the private SSH key to the ssh-agent
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-add - <<< "${{ secrets.PROD_PRIVATE_KEY }}"
+      - name: Log in to GitHub Packages
+        run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and deploy images on Prod server
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          scp  -o StrictHostKeyChecking=no -r ./.env.prod ./.env.prod.db ./docker-compose.prod.yml ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_IP }}:~/cmuxovik
+          ssh -o StrictHostKeyChecking=no ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_IP }} << 'ENDSSH'
+            cd ~/cmuxovik
+            source .env.prod
+            source .env.prod.db
+            docker login docker.pkg.github.com -u ${GITHUB_ACTOR} -p ${{ secrets.GITHUB_TOKEN }}
+            docker pull $WEB_IMAGE
+            docker pull $NGINX_IMAGE
+            docker-compose -f docker-compose.prod.yml up -d
+          ENDSSH
