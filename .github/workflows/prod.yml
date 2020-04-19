@@ -64,5 +64,5 @@ jobs:
             echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
             docker pull $WEB_IMAGE
             docker pull $NGINX_IMAGE
-            docker-compose -f docker-compose.prod.yml -p cmux-prod up -d
+            docker-compose -f docker-compose.prod.yml up -d
           ENDSSH
