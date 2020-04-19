@@ -16,6 +16,10 @@ jobs:
     steps:
       - name: Checkout master
         uses: actions/checkout@v1
+      - name: Set environment variables for container names
+        run: |
+          echo ::set-env name=WEB_IMAGE::${{ env.WEB_IMAGE }}
+          echo ::set-env name=NGINX_IMAGE::${{ env.NGINX_IMAGE }}
       - name: Add environment variables to .env.prod and .env.prod.db
         run: |
           echo DEBUG=0 >> .env.prod
