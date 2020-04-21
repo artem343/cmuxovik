@@ -17,6 +17,8 @@ from django.urls import resolve
 from django.db import IntegrityError
 from django.utils.translation import gettext as _
 
+from random import shuffle
+
 
 class CmuxListView(ListView):
     model = Cmux
@@ -63,6 +65,17 @@ class NewestCmuxListView(CmuxListView):
             exclude_params['is_approved'] = False
 
         return Cmux.objects.filter(**filter_params).exclude(**exclude_params)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = _('Newest')
+        return context
+
+
+class RandomCmuxListView(NewestCmuxListView):
+
+    def get_queryset(self):
+        return super().get_queryset().order_by('?')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
