@@ -1,5 +1,9 @@
 {% extends 'cmuxovik/base.html' %}
-{% load i18n %}
+{% load i18n remove_newlines %}
+{% block metatag %}
+<meta name="title" content="{% trans 'Cmux #'%}{{ object.id }}">
+<meta name="description" content="{{ cmux.text|remove_newlines }}">
+{% endblock %}
 {% block content %}
 {% include 'cmuxovik/cmux.html' with cmux=object %}
 {% endblock %}
