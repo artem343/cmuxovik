@@ -8,8 +8,10 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="title" content="Цмуксовик">
-    <meta name="description" content="Цмуксовик — сервис цмуксов по мотивам книги «Стих не стих»">
+    {% block metatag %}
+    <meta name="title" content="{% trans 'Cmuxovik' %}">
+    <meta name="description" content="{% trans 'Cmuxovik — invent funny short verses!' %}">
+    {% endblock %}
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css"
         href="https://storage.yandexcloud.net/cmuxovik-files/assets/css/bootstrap.min.css">
