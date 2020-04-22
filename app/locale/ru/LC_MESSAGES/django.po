@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-21 11:54+0000\n"
+"POT-Creation-Date: 2020-04-21 17:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,32 +86,31 @@ msgstr "Добавить цмукс"
 msgid "Language"
 msgstr "Язык"
 
-#: cmuxovik/templates/cmuxovik/base.html:94
+#: cmuxovik/templates/cmuxovik/base.html:97
 msgid "Actions"
 msgstr "Действия"
 
-#: cmuxovik/templates/cmuxovik/base.html:97
+#: cmuxovik/templates/cmuxovik/base.html:100
 msgid "Profile"
 msgstr "Профиль"
 
-#: cmuxovik/templates/cmuxovik/base.html:100
-#: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:5 cmuxovik/views.py:130
-msgid "Unapproved cmuxes"
-msgstr "Неподтвержденные цмуксы"
+#: cmuxovik/templates/cmuxovik/base.html:104
+msgid "Unapproved"
+msgstr "Неподтвержденные"
 
-#: cmuxovik/templates/cmuxovik/base.html:102
+#: cmuxovik/templates/cmuxovik/base.html:110
 msgid "Admin"
 msgstr "Админка"
 
-#: cmuxovik/templates/cmuxovik/base.html:106
+#: cmuxovik/templates/cmuxovik/base.html:113
 msgid "Logout"
 msgstr "Выход"
 
-#: cmuxovik/templates/cmuxovik/base.html:110
+#: cmuxovik/templates/cmuxovik/base.html:117
 msgid "Login"
 msgstr "Вход"
 
-#: cmuxovik/templates/cmuxovik/base.html:111
+#: cmuxovik/templates/cmuxovik/base.html:118
 msgid "Register"
 msgstr "Регистрация"
 
@@ -208,6 +207,10 @@ msgstr "Цмуксы с тегом"
 #: cmuxovik/templates/cmuxovik/user_cmuxes.html:10
 msgid "There are no cmuxes by"
 msgstr "Нет цмуксов от"
+
+#: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:5 cmuxovik/views.py:130
+msgid "Unapproved cmuxes"
+msgstr "Неподтвержденные цмуксы"
 
 #: cmuxovik/templates/cmuxovik/unapproved_cmuxes.html:10
 msgid "There are no unapproved cmuxes"
