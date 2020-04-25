@@ -91,8 +91,10 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle notification" href="#" id="navbarDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {% if user.author.is_moderator %}
                                 {% if number_of_unapproved > 0 %}
                                 <span class="dot"></span>
+                                {% endif %}
                                 {% endif %}
                                 <span>{% trans 'Actions' %}</span>
                             </a>
