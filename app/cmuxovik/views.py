@@ -164,7 +164,6 @@ class CmuxUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
     success_message = _("The cmux was successfully updated!")
 
     def form_valid(self, form):
-        form.instance.author = self.request.user.author
         try:
             return super().form_valid(form)
         except IntegrityError:
