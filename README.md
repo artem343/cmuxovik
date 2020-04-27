@@ -1,8 +1,8 @@
-# Cmuxovik v1.1 (work in progress)
+# Cmuxovik v1.2 (work in progress)
 
 ## What is Cmuxovik?
 
-Cmuxovik is a web app allowing users to share funny short sentences _("cmuxes", from Russian "стих" [stih] — verse)_ which follow a certain logic. Examples of cmuxes (as of 1.1, Russian only):
+Cmuxovik is a web app allowing users to share funny short sentences _("cmuxes", from Russian "стих" [stih] — verse)_ which follow a certain logic. Examples of cmuxes (currently Russian only):
 
 - целый час олень и я кушали соления
 - поднял прокурор про кур ор
@@ -22,17 +22,20 @@ The app is built using the following stack:
 - Docker
 
 
-## Running the app 
-### In 'dev' environment
+## Running the app locally
 
 1. Make sure [Docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/) are installed. 
-2. Clone the repository, `cd` into its root directory.
-3. Add environment variables:
-    1. Find the file `.env.dev.example` in the root directory, copy it into `.env.dev`
-    2. Add the value for `SECRET_KEY`, as well as your GMail credentials into `EMAIL_USER` and `EMAIL_PASS` to test the "Forgot Password" functionality.
-3. To launch containers with the app, run `docker-compose up -d`
-4. Open the app at [localhost:8000](http://localhost:8000)
-5. To stop the containers, run `docker-compose down -v`
+1. Clone the repository, `cd` into its root directory.
+1. Find the file `.env.dev.example` in the root directory, copy it into `.env.dev`
+1. Inside the `.env.dev` file:
+    1. Add a `SECRET_KEY`. You can generate one by running: 
+    
+        ```python -c 'import os; print(os.urandom(24).hex())'```
+    
+    2. Add your GMail credentials into `EMAIL_USER` and `EMAIL_PASS` to test the "Forgot Password" functionality.  
+1. To launch containers with the app, run `docker-compose up -d`
+1. Open the app at [localhost:8000](http://localhost:8000)
+1. To stop the containers, run `docker-compose down -v`
 
 
 ## Contributing
