@@ -33,9 +33,11 @@ The app is built using the following stack:
         ```python -c 'import os; print(os.urandom(24).hex())'```
     
     2. Add your GMail credentials into `EMAIL_USER` and `EMAIL_PASS` to test the "Forgot Password" functionality.  
+    3. (optional) Change the `DJANGO_SUPERUSER_*` parameters to your taste. The superuser with these parameters will be created automatically.
 1. To launch containers with the app, run `docker-compose up -d`
 1. Open the app at [localhost:8000](http://localhost:8000)
-1. To stop the containers, run `docker-compose down -v`
+    1. To give your user moderator permissions (i.e. confirm/edit/delete cmuxes), go to the admin panel, select your user in the Authors model, tick the "is moderator" checkbox, and save.  
+1. To stop the containers, run `docker-compose down -v`. The data is not persisted between runs.
 
 
 ## Contributing
