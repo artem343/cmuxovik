@@ -12,6 +12,7 @@ services:
       - ./.env.stage
     depends_on:
       - db
+    restart: always
   db:
     image: postgres:12.0-alpine
     volumes:
@@ -20,6 +21,7 @@ services:
       - 5433:5432
     env_file:
       - ./.env.stage.db
+    restart: always
   nginx:
     image: "${NGINX_IMAGE}"
     volumes:
@@ -28,6 +30,7 @@ services:
       - 1337:80
     depends_on:
       - web
+    restart: always
 
 volumes:
   postgres_data:

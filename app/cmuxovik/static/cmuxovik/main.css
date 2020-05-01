@@ -120,3 +120,13 @@ a:not([href]):not([tabindex]) {
 .star-ratings-rating-stars-container {
     vertical-align: middle;
 }
+
+/* Actions notification dot */
+  
+.dot {
+    height: 0.6rem;
+    width: 0.6rem;
+    background-color: #bce;
+    border-radius: 50%;
+    display: inline-block;
+}    
