@@ -117,3 +117,6 @@ static/
 .env.test
 .env.prod
 .env.prod.db
+
+node_modules
+cypress/integration/examples/
