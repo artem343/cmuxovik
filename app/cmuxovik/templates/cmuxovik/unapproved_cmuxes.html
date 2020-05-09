@@ -2,12 +2,12 @@
 {% load i18n %}
 
 {% block content %}
-<h2 class="mb-3">{% trans 'Unapproved cmuxes' %} ({{ page_obj.paginator.count }})</h2>
+<h2 class="mb-3" id="unapproved-cmuxes-header">{% trans 'Unapproved cmuxes' %} ({{ page_obj.paginator.count }})</h2>
 
 {% for cmux in cmuxes %}
 {% include 'cmuxovik/cmux.html' %}
 {% empty %}
-<h3>{% trans 'There are no unapproved cmuxes' %}.</h3>
+<h3 id="no-cmuxes-unapproved">{% trans 'There are no unapproved cmuxes' %}.</h3>
 {% endfor %}
 
 {% include 'cmuxovik/pagination.html' %}
