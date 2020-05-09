@@ -118,5 +118,7 @@ static/
 .env.prod
 .env.prod.db
 
+# Cypress
 node_modules
 cypress/integration/examples/
+cypress.env.json
