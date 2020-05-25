@@ -3,23 +3,24 @@
     <div class="card-header">
         <div class="d-flex">
             <div class="mr-auto p-2">
-                <img class="rounded-circle article-img" src="{{ cmux.author.avatar.url }}">
-                <a class="mr-2"
+                <img class="rounded-circle article-img author-avatar" id="author-avatar-{{ cmux.id }}"
+                    src="{{ cmux.author.avatar.url }}">
+                <a class="mr-2 author-username" id="author-username-{{ cmux.id }}"
                     href="{% url 'user-cmuxes' cmux.author.user.username %}">{{ cmux.author.user.username }}</a>
             </div>
             <div class="p-2">
                 <div class="d-flex flex-row justify-content-between">
                     <div class="p-2 bd-highlight">
                         <a href="{% url 'cmux-detail' cmux.id %}">
-                            <small class="text-muted">
+                            <small class="text-muted cmux-created-at">
                                 {{ cmux.created_at | naturaltime | shorten_naturaltime }}
                             </small>
                         </a>
                     </div>
                     <div class="p-2 bd-highlight">
-                        <a class='share-cmux'
-                        data-clipboard-text="{{ request.scheme }}://{{ request.get_host }}{% url 'cmux-detail' cmux.id %}" 
-                        role="button">
+                        <a class='share-cmux' id="share-cmux-{{ cmux.id }}"
+                            data-clipboard-text="{{ request.scheme }}://{{ request.get_host }}{% url 'cmux-detail' cmux.id %}"
+                            role="button">
                             {% fa5_icon 'share-alt' %}
                         </a>
                     </div>
@@ -31,10 +32,10 @@
         </div>
     </div>
     <div class="card-body">
-        <p class="card-text">{{ cmux.text|linebreaksbr }}</p>
+        <p class="card-text cmux-text" id="cmux-text-{{ cmux.id }}">{{ cmux.text|linebreaksbr }}</p>
         {% if cmux.tags %}
         {% for tag in cmux.tags.all %}
-        <a class="badge badge-secondary" href="{% url 'tag-cmuxes' tag.id %}">{{ tag }}</a>
+        <a class="badge badge-secondary cmux-tag" href="{% url 'tag-cmuxes' tag.id %}">{{ tag }}</a>
         {% endfor %}
         {% endif %}
     </div>
@@ -43,12 +44,13 @@
         <div class="d-flex">
             <div class="mr-auto p-2">
                 {% if not cmux.is_approved and user.author.is_moderator %}
-                <a class="btn btn-success btn-sm mr-1" href="{% url 'cmux-approve' cmux.id %}">{% trans 'Approve' %}</a>
+                <a class="btn btn-success btn-sm mr-1 approve-cmux" id="approve-cmux-{{ cmux.id }}"
+                    href="{% url 'cmux-approve' cmux.id %}">{% trans 'Approve' %}</a>
                 {% endif %}
                 {% if cmux.author == user.author and not cmux.is_approved or user.author.is_moderator %}
-                <a class="btn btn-outline-secondary btn-sm mr-1"
+                <a class="btn btn-outline-secondary btn-sm mr-1 update-cmux" id="update-cmux-{{ cmux.id }}"
                     href="{% url 'cmux-update' cmux.id %}">{% trans 'Update' %}</a>
-                <a class="btn btn-outline-danger btn-sm mr-1"
+                <a class="btn btn-outline-danger btn-sm mr-1 delete-cmux" id="delete-cmux-{{ cmux.id }}"
                     href="{% url 'cmux-delete' cmux.id %}">{% trans 'Delete' %}</a>
                 {% endif %}
             </div>

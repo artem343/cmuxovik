@@ -2,8 +2,9 @@
 <div class="mt-2">
     {% if is_paginated %}
     {% if page_obj.has_previous %}
-    <a class="btn btn-outline-info mb-4" href="?{% url_replace 1 %}">{% trans 'First' %}</a>
-    <a class="btn btn-outline-info mb-4" href="?{% url_replace page_obj.previous_page_number %}">{% trans 'Previous' %}</a>
+    <a class="btn btn-outline-info mb-4" id="pagination-first-page" href="?{% url_replace 1 %}">{% trans 'First' %}</a>
+    <a class="btn btn-outline-info mb-4" id="pagination-prev-page"
+        href="?{% url_replace page_obj.previous_page_number %}">{% trans 'Previous' %}</a>
     {% endif %}
     {% for num in page_obj.paginator.page_range %}
     {% if page_obj.number == num %}
@@ -13,8 +14,10 @@
     {% endif %}
     {% endfor %}
     {% if page_obj.has_next %}
-    <a class="btn btn-outline-info mb-4" href="?{% url_replace page_obj.next_page_number %}">{% trans 'Next' %}</a>
-    <a class="btn btn-outline-info mb-4" href="?{% url_replace paginator.num_pages %}">{% trans 'Last' %}</a>
+    <a class="btn btn-outline-info mb-4" id="pagination-next-page"
+        href="?{% url_replace page_obj.next_page_number %}">{% trans 'Next' %}</a>
+    <a class="btn btn-outline-info mb-4" id="pagination-last-page"
+        href="?{% url_replace paginator.num_pages %}">{% trans 'Last' %}</a>
     {% endif %}
     {% endif %}
-</div>    
+</div>

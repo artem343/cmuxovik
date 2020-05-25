@@ -2,13 +2,14 @@
 {% load ratings i18n %}
 
 {% block content %}
-    <h2 class="mb-3">{% trans 'Cmuxes with tag' %} "{{ tag }}" ({{ page_obj.paginator.count }})</h2>
-    
-    {% for cmux in cmuxes %}
-    {% include 'cmuxovik/cmux.html' %}
-    {% empty %}
-        <h3>{% trans 'There are no cmuxes by' %} {{ view.kwargs.username }}.</h3>
-    {% endfor %}
+<h2 class="mb-3" id="cmuxes-with-tag-header">{% trans 'Cmuxes with tag' %} "{{ tag }}" ({{ page_obj.paginator.count }})
+</h2>
 
-    {% include 'cmuxovik/pagination.html' %}
+{% for cmux in cmuxes %}
+{% include 'cmuxovik/cmux.html' %}
+{% empty %}
+<h3 id="no-cmuxes-with-tag">{% trans 'There are no cmuxes with tag' %} {{ view.kwargs.username }}.</h3>
+{% endfor %}
+
+{% include 'cmuxovik/pagination.html' %}
 {% endblock %}
