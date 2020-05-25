@@ -18,3 +18,21 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+Cypress.Commands.add('loginAsAdmin', () => {
+    const username = Cypress.env('DJANGO_SUPERUSER_USERNAME')
+    const password = Cypress.env('DJANGO_SUPERUSER_PASSWORD')
+    cy.request('/login/')
+        .its('body')
+        .then((body) => {
+            // we can use Cypress.$ to parse the string body
+            // thus enabling us to query into it easily
+            const $html = Cypress.$(body)
+            const csrf = $html.find('input[name=csrfmiddlewaretoken]').val()
+
+            cy.loginByCSRF(username, password, csrf)
+                .then((resp) => {
+                    expect(resp.status).to.eq(200)
+                })
+        })
+})

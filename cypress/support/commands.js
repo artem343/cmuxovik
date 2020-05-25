@@ -24,10 +24,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('loginByCSRF', (csrfToken) => {
-    const username = Cypress.env('DJANGO_SUPERUSER_USERNAME')
-    const password = Cypress.env('DJANGO_SUPERUSER_PASSWORD')
-
+Cypress.Commands.add('loginByCSRF', (username, password, csrfToken) => {
     cy.request({
         method: 'POST',
         url: '/login/',
@@ -40,3 +37,4 @@ Cypress.Commands.add('loginByCSRF', (csrfToken) => {
         },
     })
 })
+

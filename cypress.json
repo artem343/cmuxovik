@@ -1,9 +1,4 @@
 {
     "baseUrl": "http://localhost:8000",
-    "ignoreTestFiles": "**/examples/*.spec.js",
-    "env": {
-        "DJANGO_SUPERUSER_USERNAME": "testuser",
-        "DJANGO_SUPERUSER_PASSWORD": "testpass",
-        "DJANGO_SUPERUSER_EMAIL": "sample@email.com"
-    }
+    "ignoreTestFiles": "**/examples/*.spec.js"
 }

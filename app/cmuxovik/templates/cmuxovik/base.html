@@ -125,7 +125,7 @@
                         </li>
                         {% else %}
                         <a class="nav-item nav-link" id="login-link" data-cy="login-link"
-                            ref="{% url 'login' %}">{% trans 'Login' %}</a>
+                            href="{% url 'login' %}">{% trans 'Login' %}</a>
                         <a class="nav-item nav-link" id="register-link" data-cy="register-link"
                             href="{% url 'register' %}">{% trans 'Register' %}</a>
                         {% endif %}
