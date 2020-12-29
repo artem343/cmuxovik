@@ -47,10 +47,10 @@ jobs:
           echo POSTGRES_USER=${{ secrets.PROD_SQL_USER }} >> .env.prod.db
           echo POSTGRES_PASSWORD=${{ secrets.PROD_SQL_PASSWORD }} >> .env.prod.db
           echo POSTGRES_DB=${{ secrets.PROD_SQL_DATABASE }} >> .env.prod.db
-      - uses: webfactory/ssh-agent@v0.4.1
-        with:
-          ssh-private-key: ${{ secrets.PROD_PRIVATE_KEY }}
       - name: Build and deploy images on Prod server
+        uses: webfactory/ssh-agent@v0.4.1 # This step installs the ssh client into the workflow run. There's many options available for this on the action marketplace.
+          with:
+            ssh-private-key: ${{ secrets.PROD_PRIVATE_KEY }}
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
