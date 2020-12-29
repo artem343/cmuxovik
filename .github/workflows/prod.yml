@@ -18,8 +18,8 @@ jobs:
         uses: actions/checkout@v1
       - name: Set environment variables for container names
         run: |
-          echo ::set-env name=WEB_IMAGE::${{ env.WEB_IMAGE }}
-          echo ::set-env name=NGINX_IMAGE::${{ env.NGINX_IMAGE }}
+          echo "WEB_IMAGE=${{ env.WEB_IMAGE }}" >> $GITHUB_ENV
+          echo "NGINX_IMAGE=${{ env.NGINX_IMAGE }}" >> $GITHUB_ENV
       - name: Add environment variables to .env.prod and .env.prod.db
         run: |
           echo DEBUG=0 >> .env.prod
