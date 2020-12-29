@@ -48,8 +48,8 @@ jobs:
           echo POSTGRES_PASSWORD=${{ secrets.PROD_SQL_PASSWORD }} >> .env.prod.db
           echo POSTGRES_DB=${{ secrets.PROD_SQL_DATABASE }} >> .env.prod.db
       - uses: webfactory/ssh-agent@v0.4.1
-          with:
-            ssh-private-key: ${{ secrets.PROD_PRIVATE_KEY }}
+        with:
+          ssh-private-key: ${{ secrets.PROD_PRIVATE_KEY }}
       - name: Build and deploy images on Prod server
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
