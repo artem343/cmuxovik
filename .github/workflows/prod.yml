@@ -52,9 +52,6 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.PROD_PRIVATE_KEY }}
       - name: Build and deploy images on Prod server
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           scp  -o StrictHostKeyChecking=no -r ./.env.prod ./.env.prod.db ./docker-compose.prod.yml ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_IP }}:~/cmuxovik
           ssh -o StrictHostKeyChecking=no ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_IP }} << 'ENDSSH'
