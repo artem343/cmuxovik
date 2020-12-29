@@ -34,9 +34,11 @@
     <header class="site-header">
         <nav class="navbar navbar-dark bg-dark navbar-expand-md fixed-top">
             <div class="container">
-                <a class="navbar-brand mr-4" href="{% url 'cmuxovik-home' %}">{% trans 'Cmuxovik' %}</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
-                    aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand mr-4" id="navbar-brand" data-cy="navbar-brand"
+                    href="{% url 'cmuxovik-home' %}">{% trans 'Cmuxovik' %}</a>
+                <button class="navbar-toggler" id="navbar-toggler" data-cy="navbar-toggler" type="button"
+                    data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle"
+                    aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarToggle">
@@ -44,18 +46,19 @@
                         <!-- Search -->
                         <form class="form-inline" action="{{ request.get_full_path }}" method="get">
                             <div class="input-group m-2">
-                                <input class="form-control" id="search" type="search" placeholder="{% trans 'Search' %}"
-                                    name="search_text" value="{{ request.GET.search_text }}" aria-label="Search"
-                                    aria-describedby="button-addon2">
+                                <input class="form-control" id="search" data-cy="main-search" type="search"
+                                    placeholder="{% trans 'Search' %}" name="search_text"
+                                    value="{{ request.GET.search_text }}" aria-label="Search"
+                                    aria-describedby="main-search-submit">
                                 <div class="input-group-append">
                                     <input type="submit" value="{% trans 'Search' %}" class="btn btn-outline-secondary"
-                                        id="button-addon2" />
+                                        id="main-search-submit" data-cy="main-search-submit" />
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="navbar-nav">
-                        <a class="btn btn-success nav-item nav-link"
+                        <a class="btn btn-success nav-item nav-link" id="new-cmux" data-cy="new-cmux"
                             href="{% url 'cmux-create' %}"><b>{% trans 'New cmux' %}</b></a>
                     </div>
                     <!-- Navbar Right Side -->
@@ -89,35 +92,46 @@
                         </li> -->
                         {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle notification" href="#" id="navbarDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                            <a class="nav-link dropdown-toggle notification" href="#" id="action-dropdown"
+                                data-cy="action-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
                                 {% if user.author.is_moderator %}
                                 {% if number_of_unapproved > 0 %}
-                                <span class="dot"></span>
+                                <span class="dot" id="new-actions-dot" data-cy="new-actions-dot"></span>
+
                                 {% endif %}
                                 {% endif %}
                                 <span>{% trans 'Actions' %}</span>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'profile' %}">{% trans 'Profile' %}</a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="action-dropdown">
+                                <a class="dropdown-item" id="profile-link" data-cy="profile-link"
+                                    href="{% url 'profile' %}">{% trans 'Profile' %}</a>
                                 {% if user.author.is_moderator %}
                                 {% if number_of_unapproved > 0 %}
-                                <a class="dropdown-item" href="{% url 'unapproved-cmuxes' %}">
+                                <a class="dropdown-item" id="unapproved-cmuxes-link" data-cy="unapproved-cmuxes-link"
+                                    href="{% url 'unapproved-cmuxes' %}">
                                     <span>{% trans 'Unapproved' %}</span>
                                     <span>({{ number_of_unapproved }})</span>
                                 </a>
                                 {% endif %}
                                 {% endif %}
                                 {% if user.is_superuser %}
-                                <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans 'Admin' %}</a>
+                                <a class="dropdown-item" id="admin-link" data-cy="admin-link"
+                                    href="{% url 'admin:index' %}">{% trans 'Admin' %}</a>
                                 {% endif %}
+
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'logout' %}">{% trans 'Logout' %}</a>
+                                <a class="dropdown-item" id="logout-link" data-cy="logout-link"
+                                    href="{% url 'logout' %}">{% trans 'Logout' %}</a>
                             </div>
                         </li>
                         {% else %}
-                        <a class="nav-item nav-link" href="{% url 'login' %}">{% trans 'Login' %}</a>
-                        <a class="nav-item nav-link" href="{% url 'register' %}">{% trans 'Register' %}</a>
+                        <a class="nav-item nav-link" id="login-link" data-cy="login-link"
+                            href="{% url 'login' %}">{% trans 'Login' %}</a>
+                        <a class="nav-item nav-link" id="register-link" data-cy="register-link"
+                            href="{% url 'register' %}">{% trans 'Register' %}</a>
                         {% endif %}
                     </div>
                 </div>

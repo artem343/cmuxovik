@@ -8,8 +8,8 @@
             <h3>{% trans 'Are you sure you want to delete the cmux' %} <br />"{{ object.text }}"?</h3>
         </fieldset>
         <div class="form-group">
-            <button class="btn btn-outline-danger" type="submit">{% trans 'Yes, delete' %}</button>
-            <a class="btn btn-outline-secondary" href="{% url 'cmuxovik-home' %}">{% trans 'Cancel' %}</a>
+            <button class="btn btn-outline-danger" id="submit" type="submit">{% trans 'Yes, delete' %}</button>
+            <a class="btn btn-outline-secondary" id="cancel" href="{% url 'cmuxovik-home' %}">{% trans 'Cancel' %}</a>
         </div>
     </form>
 </div>
