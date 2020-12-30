@@ -107,7 +107,7 @@ jobs:
             cd ~/cmuxovik-stage
             source .env.stage
             source .env.stage.db
-            docker login -u ${GITHUB_ACTOR} -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
+            echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
             docker pull $WEB_IMAGE  
             docker pull $NGINX_IMAGE
             docker-compose -f docker-compose.stage.yml -p cmux-stage up -d
