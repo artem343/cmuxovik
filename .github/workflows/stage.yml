@@ -6,8 +6,8 @@ on:
       - develop
 
 env:
-  WEB_IMAGE: docker.pkg.github.com/$GITHUB_REPOSITORY/web
-  NGINX_IMAGE: docker.pkg.github.com/$GITHUB_REPOSITORY/nginx
+  WEB_IMAGE: ghcr.io/$GITHUB_REPOSITORY/web
+  NGINX_IMAGE: ghcr.io/$GITHUB_REPOSITORY/nginx
 
 jobs:
   build:
@@ -48,7 +48,7 @@ jobs:
           echo "WEB_IMAGE=${{ env.WEB_IMAGE }}" >> $GITHUB_ENV
           echo "NGINX_IMAGE=${{ env.NGINX_IMAGE }}" >> $GITHUB_ENV
       - name: Log in to GitHub Packages
-        run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
+        run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Pull images
@@ -107,7 +107,7 @@ jobs:
             cd ~/cmuxovik-stage
             source .env.stage
             source .env.stage.db
-            echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
+            docker login -u ${GITHUB_ACTOR} -p ${{ secrets.CR_PAT }} ghcr.io
             docker pull $WEB_IMAGE  
             docker pull $NGINX_IMAGE
             docker-compose -f docker-compose.stage.yml -p cmux-stage up -d
