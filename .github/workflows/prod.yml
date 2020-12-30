@@ -6,8 +6,8 @@ on:
       - master
 
 env:
-  WEB_IMAGE: docker.pkg.github.com/$GITHUB_REPOSITORY/web
-  NGINX_IMAGE: docker.pkg.github.com/$GITHUB_REPOSITORY/nginx
+  WEB_IMAGE: ghcr.io/$GITHUB_REPOSITORY/web
+  NGINX_IMAGE: ghcr.io/$GITHUB_REPOSITORY/nginx
 
 jobs:
   deploy:
@@ -58,7 +58,7 @@ jobs:
             cd ~/cmuxovik
             source .env.prod
             source .env.prod.db
-            echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
+            echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
             docker pull $WEB_IMAGE
             docker pull $NGINX_IMAGE
             env $(cat .env.prod) docker-compose -f docker-compose.prod.yml up -d
