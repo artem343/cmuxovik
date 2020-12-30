@@ -45,8 +45,8 @@ jobs:
           echo POSTGRES_DB=${{ secrets.STAGE_SQL_DATABASE }} >> .env.stage.db
       - name: Set environment variables
         run: |
-          echo ::set-env name=WEB_IMAGE::${{ env.WEB_IMAGE }}
-          echo ::set-env name=NGINX_IMAGE::${{ env.NGINX_IMAGE }}
+          echo "WEB_IMAGE=${{ env.WEB_IMAGE }}" >> $GITHUB_ENV
+          echo "NGINX_IMAGE=${{ env.NGINX_IMAGE }}" >> $GITHUB_ENV
       - name: Log in to GitHub Packages
         run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
         env:
@@ -96,21 +96,15 @@ jobs:
           echo POSTGRES_USER=${{ secrets.STAGE_SQL_USER }} >> .env.stage.db
           echo POSTGRES_PASSWORD=${{ secrets.STAGE_SQL_PASSWORD }} >> .env.stage.db
           echo POSTGRES_DB=${{ secrets.STAGE_SQL_DATABASE }} >> .env.stage.db
-      - name: Add the private SSH key to the ssh-agent
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          mkdir -p ~/.ssh
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-add - <<< "${{ secrets.STAGE_PRIVATE_KEY }}"
+      - name: Install SSH Client 🔑
+        uses: webfactory/ssh-agent@v0.4.1 # This step installs the ssh client into the workflow run. There's many options available for this on the action marketplace.
+        with:
+          ssh-private-key: ${{ secrets.STAGE_PRIVATE_KEY }}
       - name: Build and deploy images on Stage server
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          scp  -o StrictHostKeyChecking=no -r ./.env.stage ./.env.stage.db ./docker-compose.stage.yml ${{ secrets.STAGE_SERVER_USER }}@${{ secrets.STAGE_SERVER_IP }}:~/cmuxovik
+          scp  -o StrictHostKeyChecking=no -r ./.env.stage ./.env.stage.db ./docker-compose.stage.yml ${{ secrets.STAGE_SERVER_USER }}@${{ secrets.STAGE_SERVER_IP }}:~/cmuxovik-stage
           ssh -o StrictHostKeyChecking=no ${{ secrets.STAGE_SERVER_USER }}@${{ secrets.STAGE_SERVER_IP }} << 'ENDSSH'
-            cd ~/cmuxovik
+            cd ~/cmuxovik-stage
             source .env.stage
             source .env.stage.db
             docker login -u ${GITHUB_ACTOR} -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
