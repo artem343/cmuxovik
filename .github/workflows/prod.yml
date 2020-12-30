@@ -58,7 +58,7 @@ jobs:
             cd ~/cmuxovik
             source .env.prod
             source .env.prod.db
-            echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
+            docker login -u $GITHUB_ACTOR -p ${{ secrets.CR_PAT }} ghcr.io
             docker pull $WEB_IMAGE
             docker pull $NGINX_IMAGE
             env $(cat .env.prod) docker-compose -f docker-compose.prod.yml up -d
