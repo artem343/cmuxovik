@@ -6,8 +6,8 @@ on:
       - master
 
 env:
-  WEB_IMAGE: docker.pkg.github.com/$GITHUB_REPOSITORY/web
-  NGINX_IMAGE: docker.pkg.github.com/$GITHUB_REPOSITORY/nginx
+  WEB_IMAGE: ghcr.io/$GITHUB_REPOSITORY/web
+  NGINX_IMAGE: ghcr.io/$GITHUB_REPOSITORY/nginx
 
 jobs:
   deploy:
