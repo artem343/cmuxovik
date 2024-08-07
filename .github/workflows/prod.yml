@@ -58,7 +58,8 @@ jobs:
             cd ~/cmuxovik
             source .env.prod
             source .env.prod.db
-            docker login -u $GITHUB_ACTOR -p ${{ secrets.CR_PAT }} ghcr.io
+            hostname
+            docker login -u $GITHUB_ACTOR -p "${{ secrets.CR_PAT }}" ghcr.io
             docker pull $WEB_IMAGE
             docker pull $NGINX_IMAGE
             env $(cat .env.prod) docker-compose -f docker-compose.prod.yml up -d
