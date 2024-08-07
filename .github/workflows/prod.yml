@@ -59,7 +59,9 @@ jobs:
             source .env.prod
             source .env.prod.db
             hostname
+            set -x
             docker login -u $GITHUB_ACTOR -p "${{ secrets.CR_PAT }}" ghcr.io
+            set +x
             docker pull $WEB_IMAGE
             docker pull $NGINX_IMAGE
             env $(cat .env.prod) docker-compose -f docker-compose.prod.yml up -d
