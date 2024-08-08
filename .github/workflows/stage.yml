@@ -113,5 +113,5 @@ jobs:
             docker login -u ${{ github.actor }} -p ${{ secrets.CR_PAT }} ghcr.io
             docker pull $WEB_IMAGE  
             docker pull $NGINX_IMAGE
-            env $(cat .env.stage) docker-compose -f docker-compose.stage.yml -p cmux-stage up -d
+            env $(cat .env.stage) docker compose -f docker-compose.stage.yml -p cmux-stage up -d
           ENDSSH
