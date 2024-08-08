@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout develop branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Add environment variables to .envs
         run: |
           echo DEBUG=0 >> .env.stage
@@ -71,7 +71,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout master
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Add environment variables to .env
         run: |
           echo DEBUG=0 >> .env.stage
