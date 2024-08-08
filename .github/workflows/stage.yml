@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - develop
-
+  workflow_dispatch:
+  
 env:
   WEB_IMAGE: ghcr.io/$GITHUB_REPOSITORY/web
   NGINX_IMAGE: ghcr.io/$GITHUB_REPOSITORY/nginx
