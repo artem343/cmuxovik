@@ -60,6 +60,7 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "docker-compose.ci.yml"
+          up-flags: "--build"
       - name: Push images
         run: |
           docker push ${{ env.WEB_IMAGE }}
