@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout develop branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Add environment variables to .envs
         run: |
           echo DEBUG=0 >> .env.stage
@@ -56,8 +56,9 @@ jobs:
           docker pull ${{ env.WEB_IMAGE }} || true
           docker pull ${{ env.NGINX_IMAGE }} || true
       - name: Build images
-        run: |
-          docker-compose -f docker-compose.ci.yml build
+        uses: hoverkraft-tech/compose-action@v2
+        with:
+          compose-file: "docker-compose.ci.yml"
       - name: Push images
         run: |
           docker push ${{ env.WEB_IMAGE }}
@@ -68,7 +69,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout master
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Add environment variables to .env
         run: |
           echo DEBUG=0 >> .env.stage
