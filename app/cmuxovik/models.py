@@ -42,13 +42,13 @@ class SoftDeleteQuerySet(models.query.QuerySet):
     def delete(self):
         for obj in self:
             obj.deleted_at = timezone.now()
-            self.is_active = False
+            obj.is_active = False
             obj.save()
 
     def undelete(self):
         for obj in self:
             obj.deleted_at = None
-            self.is_active = True
+            obj.is_active = True
             obj.save()
 
 

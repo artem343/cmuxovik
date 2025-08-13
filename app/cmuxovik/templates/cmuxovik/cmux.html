@@ -44,8 +44,10 @@
         <div class="d-flex">
             <div class="mr-auto p-2">
                 {% if not cmux.is_approved and user.author.is_moderator %}
-                <a class="btn btn-success btn-sm mr-1 approve-cmux" id="approve-cmux-{{ cmux.id }}"
-                    href="{% url 'cmux-approve' cmux.id %}">{% trans 'Approve' %}</a>
+                <form method="post" action="{% url 'cmux-approve' cmux.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-sm mr-1 approve-cmux" id="approve-cmux-{{ cmux.id }}">{% trans 'Approve' %}</button>
+                </form>
                 {% endif %}
                 {% if cmux.author == user.author and not cmux.is_approved or user.author.is_moderator %}
                 <a class="btn btn-outline-secondary btn-sm mr-1 update-cmux" id="update-cmux-{{ cmux.id }}"
