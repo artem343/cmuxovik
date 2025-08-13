@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
 from .models import Cmux, Tag, Rating
 from django.contrib.auth.models import User
 from django.views.generic import (
@@ -18,6 +18,8 @@ from django.db import IntegrityError
 from django.utils.translation import gettext as _
 
 from random import shuffle
+from django.views.decorators.http import require_POST
+from django.utils.http import url_has_allowed_host_and_scheme
 
 
 class CmuxListView(ListView):
@@ -210,6 +212,7 @@ def is_moderator(user):
 
 
 @user_passes_test(is_moderator)
+@require_POST
 def approve_cmux(request, pk):
     cmux = Cmux.objects.get(pk=pk)
     if cmux.is_approved:
@@ -221,7 +224,10 @@ def approve_cmux(request, pk):
         messages.success(
             request, _('The cmux was approved!'))
 
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    referer = request.META.get('HTTP_REFERER', '')
+    if referer and url_has_allowed_host_and_scheme(referer, allowed_hosts={request.get_host()}, require_https=request.is_secure()):
+        return redirect(referer)
+    return redirect('/')
 
 
 def unapproved_cmuxes_count():
@@ -240,9 +246,9 @@ def error_500(request):
 
 def error_403(request, exception):
     data = {}
-    return render(request, 'cmuxovik/404.html', data)
+    return render(request, 'cmuxovik/403.html', data)
 
 
 def error_400(request, exception):
     data = {}
-    return render(request, 'cmuxovik/500.html', data)
+    return render(request, 'cmuxovik/400.html', data)
