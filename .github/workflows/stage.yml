@@ -5,7 +5,7 @@ on:
     branches:
       - develop
   workflow_dispatch:
-  
+
 env:
   WEB_IMAGE: ghcr.io/$GITHUB_REPOSITORY/web
   NGINX_IMAGE: ghcr.io/$GITHUB_REPOSITORY/nginx
@@ -57,9 +57,10 @@ jobs:
           docker pull ${{ env.WEB_IMAGE }} || true
           docker pull ${{ env.NGINX_IMAGE }} || true
       - name: Build images
-        uses: hoverkraft-tech/compose-action@v2
+        uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "docker-compose.ci.yml"
+          up-flags: "--build"
       - name: Push images
         run: |
           docker push ${{ env.WEB_IMAGE }}
@@ -112,5 +113,5 @@ jobs:
             docker login -u ${{ github.actor }} -p ${{ secrets.CR_PAT }} ghcr.io
             docker pull $WEB_IMAGE  
             docker pull $NGINX_IMAGE
-            env $(cat .env.stage) docker-compose -f docker-compose.stage.yml -p cmux-stage up -d
+            env $(cat .env.stage) docker compose -f docker-compose.stage.yml -p cmux-stage up -d
           ENDSSH
